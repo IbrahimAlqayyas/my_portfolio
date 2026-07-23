@@ -47,12 +47,11 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
       // Hero Header
       div(classes: 'project-hero', [
         div(classes: 'tags-list', [
-          for (var tag in project.tags)
-            span(classes: 'tag-chip', [Component.text(tag)]),
+          for (var tag in project.tags) span(classes: 'tag-chip', [Component.text(tag)]),
         ]),
         h1([Component.text(project.title)]),
         p(classes: 'project-subtitle', [Component.text(project.subtitle)]),
-        
+
         // Links
         div(classes: 'project-links', [
           if (project.demoUrl != null)
@@ -217,7 +216,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           fontWeight: FontWeight.w700,
           color: textColor,
           margin: Margin.only(bottom: 1.2.rem),
-          border: Border.only(bottom: BorderSide.solid(color: surfaceBorder, width: 1.px)),
+          border: Border.only(
+            bottom: BorderSide.solid(color: surfaceBorder, width: 1.px),
+          ),
           padding: Padding.only(bottom: 0.5.rem),
         ),
         css('.full-description').styles(

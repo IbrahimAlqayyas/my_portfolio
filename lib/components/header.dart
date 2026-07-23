@@ -40,7 +40,7 @@ class Header extends StatelessComponent {
       css('&').styles(
         display: Display.flex,
         width: 100.percent,
-        padding: Padding.symmetric(vertical: 1.5.rem, horizontal: 2.rem),
+        padding: Padding.symmetric(vertical: 1.5.rem, horizontal: 0.px),
         justifyContent: JustifyContent.center,
         boxSizing: BoxSizing.borderBox,
       ),
@@ -49,6 +49,8 @@ class Header extends StatelessComponent {
           display: Display.flex,
           maxWidth: 1200.px,
           width: 100.percent,
+          padding: Padding.symmetric(horizontal: 2.rem),
+          boxSizing: BoxSizing.borderBox,
           justifyContent: JustifyContent.spaceBetween,
           alignItems: AlignItems.center,
         ),
