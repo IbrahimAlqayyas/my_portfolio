@@ -67,9 +67,11 @@ class About extends StatelessComponent {
           color: primaryColor,
           fontWeight: FontWeight.w600,
           textDecoration: TextDecoration(line: TextDecorationLine.none),
+          cursor: Cursor.pointer,
         ),
         css('a:hover').styles(
-          textDecoration: TextDecoration(line: TextDecorationLine.underline),
+          color: textColor,
+          textDecoration: TextDecoration(line: TextDecorationLine.none),
         ),
       ]),
     ]),

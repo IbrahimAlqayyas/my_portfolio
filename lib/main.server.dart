@@ -44,6 +44,10 @@ void main() {
         color: textMutedColor,
         fontSize: 1.1.rem,
       ),
+      css('a, a:hover, a:visited, a:active').styles(
+        textDecoration: TextDecoration(line: TextDecorationLine.none),
+        cursor: Cursor.pointer,
+      ),
     ],
     body: App(),
   ));

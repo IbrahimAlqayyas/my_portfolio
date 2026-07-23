@@ -56,10 +56,11 @@ class Contact extends StatelessComponent {
           color: primaryColor,
           textDecoration: TextDecoration(line: TextDecorationLine.none),
           fontWeight: FontWeight.w600,
+          cursor: Cursor.pointer,
         ),
         css('a:hover').styles(
           color: textColor,
-          textDecoration: TextDecoration(line: TextDecorationLine.underline),
+          textDecoration: TextDecoration(line: TextDecorationLine.none),
         ),
       ]),
     ]),
