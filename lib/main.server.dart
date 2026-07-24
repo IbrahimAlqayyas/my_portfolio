@@ -26,6 +26,7 @@ void main() {
     styles: [
       css.import('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'),
       css('html, body').styles(
+        raw: {'scroll-behavior': 'smooth'},
         width: 100.percent,
         minHeight: 100.vh,
         padding: Padding.zero,

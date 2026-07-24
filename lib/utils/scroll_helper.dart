@@ -4,3 +4,7 @@ import 'scroll_helper_stub.dart'
 void scrollToTop() {
   resetScroll();
 }
+
+void scrollToId(String id) {
+  scrollElementToView(id);
+}

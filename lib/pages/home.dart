@@ -42,7 +42,17 @@ class _HomeState extends State<Home> {
           ),
         ]),
         div(classes: 'hero-actions', [
-          a(href: '#projects', classes: 'btn btn-primary', [Component.text('Explore Projects ↓')]),
+          a(
+            href: '#projects',
+            classes: 'btn btn-primary',
+            events: {
+              'click': (e) {
+                e.preventDefault();
+                scrollToId('projects');
+              },
+            },
+            [Component.text('Explore Projects ↓')],
+          ),
           Link(to: '/contact', classes: 'btn btn-secondary', child: Component.text('Get in Touch')),
         ]),
       ]),
