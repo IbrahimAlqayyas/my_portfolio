@@ -18,6 +18,18 @@ class CosmicCanvas extends StatelessComponent {
   function initCosmicCanvas() {
 
     const canvas = document.getElementById('cosmic-canvas');
+    window.myCanvas = canvas;
+
+setInterval(() => {
+  const current = document.getElementById('cosmic-canvas');
+
+  console.log({
+    sameElement: current === window.myCanvas,
+    width: current.width,
+    height: current.height
+  });
+}, 1000);
+
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d', {
@@ -29,24 +41,46 @@ class CosmicCanvas extends StatelessComponent {
     let height = 0;
     let dpr = 1;
 
-    function resizeCanvas() {
+function resizeCanvas() {
 
-      dpr = window.devicePixelRatio || 1;
+  console.log("resizeCanvas() called");
 
-      width = window.innerWidth;
-      height = window.innerHeight;
+  const dpr = window.devicePixelRatio || 1;
 
-      canvas.style.width = width + 'px';
-      canvas.style.height = height + 'px';
+  width = window.innerWidth;
+  height = window.innerHeight;
 
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
+  console.table({
+    width,
+    height,
+    dpr,
+    canvasWidth: canvas.width,
+    canvasHeight: canvas.height
+  });
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-    }
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+}
 
     resizeCanvas();
+
+requestAnimationFrame(() => {
+    resizeCanvas();
+
+    requestAnimationFrame(() => {
+        resizeCanvas();
+
+        setTimeout(resizeCanvas, 50);
+        setTimeout(resizeCanvas, 150);
+        setTimeout(resizeCanvas, 300);
+    });
+});
     window.addEventListener('resize', resizeCanvas);
 
     const mouse = {
@@ -131,7 +165,28 @@ class CosmicCanvas extends StatelessComponent {
 
     }
 
+function ensureCanvasSize() {
+
+    if (
+        canvas.width !== width ||
+        canvas.height !== height ||
+        canvas.style.width !== width + "px" ||
+        canvas.style.height !== height + "px"
+    ) {
+
+        canvas.width = width;
+        canvas.height = height;
+
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+
+        console.log("Canvas restored");
+    }
+}
+
     function animate() {
+
+ensureCanvasSize();
 
       ctx.clearRect(0, 0, width, height);
 

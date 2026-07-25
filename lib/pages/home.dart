@@ -101,6 +101,7 @@ class _HomeState extends State<Home> {
           border: Border.all(color: surfaceBorder, width: 1.px),
           radius: BorderRadius.all(Radius.circular(24.px)),
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(0, 0, 0, 0.4)),
+          opacity: 0.8,
           raw: {'backdrop-filter': 'blur(12px)', '-webkit-backdrop-filter': 'blur(12px)'},
         ),
         css('.hero-badge').styles(
