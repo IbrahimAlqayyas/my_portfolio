@@ -22,12 +22,6 @@ class CosmicCanvas extends StatelessComponent {
 
 setInterval(() => {
   const current = document.getElementById('cosmic-canvas');
-
-  console.log({
-    sameElement: current === window.myCanvas,
-    width: current.width,
-    height: current.height
-  });
 }, 1000);
 
     if (!canvas) return;
@@ -43,20 +37,11 @@ setInterval(() => {
 
 function resizeCanvas() {
 
-  console.log("resizeCanvas() called");
-
   const dpr = window.devicePixelRatio || 1;
 
   width = window.innerWidth;
   height = window.innerHeight;
 
-  console.table({
-    width,
-    height,
-    dpr,
-    canvasWidth: canvas.width,
-    canvasHeight: canvas.height
-  });
 
   canvas.style.width = width + "px";
   canvas.style.height = height + "px";
@@ -112,8 +97,8 @@ requestAnimationFrame(() => {
     const stardust = [];
 
     const numParticles = Math.min(
-      Math.floor(width * height / 10000),
-      100
+      Math.floor(width * height / 4000),
+      250
     );
 
     for (let i = 0; i < numParticles; i++) {
@@ -140,7 +125,7 @@ requestAnimationFrame(() => {
 
     function createStardust(x, y) {
 
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 4; i++) {
 
         stardust.push({
 
@@ -180,7 +165,6 @@ function ensureCanvasSize() {
         canvas.style.width = width + "px";
         canvas.style.height = height + "px";
 
-        console.log("Canvas restored");
     }
 }
 
