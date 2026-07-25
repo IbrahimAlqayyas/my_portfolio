@@ -181,6 +181,7 @@ class _HomeState extends State<Home> {
         css('&').styles(
           width: 100.percent,
           margin: Margin.only(bottom: 4.rem),
+          opacity: 0.8,
         ),
         css('.section-header', [
           css('&').styles(
