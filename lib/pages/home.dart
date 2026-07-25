@@ -34,11 +34,16 @@ class _HomeState extends State<Home> {
         ]),
         h1([Component.text('Ibrahim AlQyas')]),
         p(classes: 'hero-title', [
-          Component.text('Mobile & Web Software Engineer'),
+          Component.text('Mobile & Web Software Engineer (Flutter & Jaspr)'),
         ]),
         p(classes: 'hero-bio', [
           Component.text(
-            'Experienced developer specializing in cross-platform mobile apps with Flutter and high-performance web solutions with Jaspr & Dart. Passionate about clean architecture, sleek UI/UX, and building end-to-end digital experiences.',
+            'I am an experienced software engineer with +6 years of experience specializing in Flutter and Jaspr. I am passionate about building high-quality, user-focused applications that solve real-world problems.',
+          ),
+          br(),
+          br(),
+          Component.text(
+            'My expertise includes mobile app development, web applications, and end-to-end software solutions. I am committed to writing clean, maintainable code and delivering exceptional digital experiences.',
           ),
         ]),
         div(classes: 'hero-actions', [
@@ -61,12 +66,11 @@ class _HomeState extends State<Home> {
       div(id: 'projects', classes: 'projects-section', [
         div(classes: 'section-header', [
           h2([Component.text('Featured Work & Projects')]),
-          p([Component.text('A showcase of my recent web applications, mobile apps, and technical projects.')]),
+          p([Component.text('A showcase of my recent mobile apps, web applications, and technical projects.')]),
         ]),
 
         div(classes: 'projects-grid', [
-          for (var project in projectsList)
-            _ProjectCard(project: project),
+          for (var project in projectsList) _ProjectCard(project: project),
         ]),
       ]),
     ]);
@@ -202,9 +206,11 @@ class _ProjectCard extends StatelessComponent {
           img(src: project.coverImage, alt: project.title),
         ]),
         div(classes: 'card-content', [
+          div(classes: 'main-tag-wrapper', [
+            span(classes: 'main-tag-badge', [Component.text(project.mainTag)]),
+          ]),
           div(classes: 'card-tags', [
-            for (var tag in project.tags.take(3))
-              span(classes: 'card-tag', [Component.text(tag)]),
+            for (var tag in project.tags.take(3)) span(classes: 'card-tag', [Component.text(tag)]),
           ]),
           h3([Component.text(project.title)]),
           p([Component.text(project.shortDescription)]),
@@ -244,6 +250,22 @@ class _ProjectCard extends StatelessComponent {
           flexDirection: FlexDirection.column,
           flex: Flex(grow: 1),
         ),
+        css('.main-tag-wrapper', [
+          css('&').styles(
+            margin: Margin.only(bottom: 0.6.rem),
+          ),
+          css('.main-tag-badge').styles(
+            display: Display.inlineFlex,
+            alignItems: AlignItems.center,
+            backgroundColor: Color.rgba(129, 140, 248, 0.16),
+            color: accentColor,
+            border: Border.all(color: Color.rgba(129, 140, 248, 0.4), width: 1.px),
+            padding: Padding.symmetric(vertical: 3.px, horizontal: 10.px),
+            radius: BorderRadius.all(Radius.circular(12.px)),
+            fontSize: 0.78.rem,
+            fontWeight: FontWeight.w700,
+          ),
+        ]),
         css('.card-tags').styles(
           display: Display.flex,
           flexWrap: FlexWrap.wrap,

@@ -5,19 +5,28 @@ import 'package:jaspr_router/jaspr_router.dart';
 import '../constants/theme.dart';
 
 class Header extends StatelessComponent {
-  const Header({super.key});
+  final String? activePath;
+  const Header({this.activePath, super.key});
 
   @override
   Component build(BuildContext context) {
-    var activePath = RouteState.of(context).location;
+    String currentPath =
+        activePath ??
+        () {
+          try {
+            return RouteState.of(context).location;
+          } catch (_) {
+            return '/';
+          }
+        }();
 
     return header([
       div(classes: 'header-inner', [
         Link(
           to: '/',
           child: div(classes: 'brand-logo', [
-            span(classes: 'logo-accent', [Component.text('I')]),
-            Component.text('brahim AlQyas'),
+            img(src: '/images/logo1.png', alt: 'Ibrahim'),
+            img(src: '/images/logo2.png', alt: 'AlQyas'),
           ]),
         ),
         nav([
@@ -26,7 +35,7 @@ class Header extends StatelessComponent {
             (label: 'About', path: '/about'),
             (label: 'Contact', path: '/contact'),
           ])
-            div(classes: activePath == route.path ? 'active' : null, [
+            div(classes: currentPath == route.path ? 'active' : null, [
               Link(to: route.path, child: Component.text(route.label)),
             ]),
         ]),
@@ -59,20 +68,37 @@ class Header extends StatelessComponent {
         ),
         css('.brand-logo', [
           css('&').styles(
-            fontSize: 1.35.rem,
-            fontWeight: FontWeight.w800,
-            color: textColor,
+            display: Display.flex,
+            alignItems: AlignItems.center,
+            gap: Gap.all(12.px),
           ),
-          css('.logo-accent').styles(
-            color: primaryColor,
-            fontSize: 1.5.rem,
-          ),
+          css('img', [
+            css('&').styles(
+              height: 22.px,
+              width: Unit.auto,
+              display: Display.block,
+              transition: Transition('filter', duration: Duration(milliseconds: 300)),
+              raw: {
+                'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+              },
+            ),
+            css('&:last-child').styles(
+              raw: {
+                'animation': 'electrical-flicker 6s infinite linear',
+              },
+            ),
+            css('&:hover').styles(
+              raw: {
+                'filter': 'drop-shadow(0 0 6px rgba(255, 87, 123, 0.6)) drop-shadow(0 0 10px rgba(255, 87, 123, 0.3))',
+              },
+            ),
+          ]),
         ]),
         css('nav', [
           css('&').styles(
             display: Display.flex,
             height: 3.2.em,
-            radius: BorderRadius.all(Radius.circular(16.px)), 
+            radius: BorderRadius.all(Radius.circular(16.px)),
             overflow: Overflow.clip,
             justifyContent: JustifyContent.spaceBetween,
             backgroundColor: surfaceColor,
@@ -109,9 +135,115 @@ class Header extends StatelessComponent {
               backgroundColor: primaryColor,
               shadow: BoxShadow(offsetX: 0.px, offsetY: 0.px, blur: 8.px, color: primaryColor),
             ),
-          ])
+          ]),
         ]),
       ]),
     ]),
+    css.keyframes('electrical-flicker', {
+      '0%, 40%': Styles(
+        raw: {
+          'opacity': '1',
+          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+        },
+      ),
+      // Burst 1: 4 Movements (41% - 48%)
+      '41%': Styles(
+        raw: {
+          'opacity': '0.2',
+          'filter': 'none',
+        },
+      ),
+      '42%': Styles(
+        raw: {
+          'opacity': '0.85',
+          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.2))',
+        },
+      ),
+      '43%': Styles(
+        raw: {
+          'opacity': '0.35',
+          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.1))',
+        },
+      ),
+      '44%': Styles(
+        raw: {
+          'opacity': '0.9',
+          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.25))',
+        },
+      ),
+      '45%': Styles(
+        raw: {
+          'opacity': '0.15',
+          'filter': 'none',
+        },
+      ),
+      '46%': Styles(
+        raw: {
+          'opacity': '0.8',
+          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.2))',
+        },
+      ),
+      '47%': Styles(
+        raw: {
+          'opacity': '0.4',
+          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.15))',
+        },
+      ),
+      '48%, 82%': Styles(
+        raw: {
+          'opacity': '1',
+          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+        },
+      ),
+      // Burst 2: 4 Movements (83% - 90%)
+      '83%': Styles(
+        raw: {
+          'opacity': '0.25',
+          'filter': 'none',
+        },
+      ),
+      '84%': Styles(
+        raw: {
+          'opacity': '0.9',
+          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.25))',
+        },
+      ),
+      '85%': Styles(
+        raw: {
+          'opacity': '0.3',
+          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.1))',
+        },
+      ),
+      '86%': Styles(
+        raw: {
+          'opacity': '0.85',
+          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.2))',
+        },
+      ),
+      '87%': Styles(
+        raw: {
+          'opacity': '0.18',
+          'filter': 'none',
+        },
+      ),
+      '88%': Styles(
+        raw: {
+          'opacity': '0.95',
+          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.3))',
+        },
+      ),
+      '89%': Styles(
+        raw: {
+          'opacity': '0.35',
+          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.15))',
+        },
+      ),
+      '90%, 100%': Styles(
+        raw: {
+          'opacity': '1',
+          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+        },
+      ),
+    }),
   ];
 }

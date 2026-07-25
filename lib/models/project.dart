@@ -5,6 +5,7 @@ class Project {
   final String shortDescription;
   final String fullDescription;
   final String coverImage;
+  final String mainTag;
   final List<String> tags;
   final List<String> images;
   final List<String> videos;
@@ -19,6 +20,7 @@ class Project {
     required this.shortDescription,
     required this.fullDescription,
     required this.coverImage,
+    required this.mainTag,
     required this.tags,
     this.images = const [],
     this.videos = const [],

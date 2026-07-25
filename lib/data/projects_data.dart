@@ -12,6 +12,7 @@ This project is an enterprise-level analytics dashboard designed to monitor and 
 Built with modern web technologies and clean architecture, it features customizable widget dashboards, dark/light theme switching, and interactive charting capabilities.
 ''',
     coverImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+    mainTag: 'Web',
     tags: ['Jaspr', 'Dart', 'Web', 'Analytics', 'Tailwind'],
     images: [
       'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80',
@@ -39,6 +40,7 @@ A modern digital wallet application featuring biometric authentication, instant 
 Key architectural features include clean state management, encrypted local storage, biometric security, and responsive UI scaling across desktop and mobile browsers.
 ''',
     coverImage: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+    mainTag: 'Mobile',
     tags: ['Flutter', 'Dart', 'Fintech', 'State Management'],
     images: [
       'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1000&q=80',
@@ -62,6 +64,7 @@ Key architectural features include clean state management, encrypted local stora
 A sleek, performant e-commerce mobile application crafted with Flutter and Dart. Features dynamic product grids, seamless cart state synchronization, filterable product catalogs, and integrated payment gateway flows.
 ''',
     coverImage: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80',
+    mainTag: 'Mobile',
     tags: ['Flutter Mobile', 'Dart', 'E-Commerce', 'UI/UX'],
     images: [
       'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1000&q=80',

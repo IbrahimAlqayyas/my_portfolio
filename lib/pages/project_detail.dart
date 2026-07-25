@@ -46,6 +46,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
       // Hero Header
       div(classes: 'project-hero', [
+        div(classes: 'main-tag-wrapper', [
+          span(classes: 'main-tag-badge', [Component.text(project.mainTag)]),
+        ]),
         div(classes: 'tags-list', [
           for (var tag in project.tags) span(classes: 'tag-chip', [Component.text(tag)]),
         ]),
@@ -163,6 +166,22 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           fontSize: 1.3.rem,
           color: textMutedColor,
           margin: Margin.only(bottom: 1.5.rem),
+        ),
+      ]),
+      css('.main-tag-wrapper', [
+        css('&').styles(
+          margin: Margin.only(bottom: 0.8.rem),
+        ),
+        css('.main-tag-badge').styles(
+          display: Display.inlineFlex,
+          alignItems: AlignItems.center,
+          backgroundColor: Color.rgba(129, 140, 248, 0.16),
+          color: accentColor,
+          border: Border.all(color: Color.rgba(129, 140, 248, 0.4), width: 1.px),
+          padding: Padding.symmetric(vertical: 4.px, horizontal: 12.px),
+          radius: BorderRadius.all(Radius.circular(14.px)),
+          fontSize: 0.85.rem,
+          fontWeight: FontWeight.w700,
         ),
       ]),
       css('.tags-list', [

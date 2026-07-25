@@ -34,7 +34,7 @@ class AppState extends State<App> {
       Router(routes: [
         ShellRoute(
           builder: (context, state, child) => Component.fragment([
-            const Header(),
+            Header(activePath: state.location),
             child,
           ]),
           routes: [
