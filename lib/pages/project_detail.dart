@@ -175,9 +175,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         css('.main-tag-badge').styles(
           display: Display.inlineFlex,
           alignItems: AlignItems.center,
-          backgroundColor: Color.rgba(129, 140, 248, 0.16),
+          backgroundColor: Color.rgba(255, 87, 123, 0.16),
           color: accentColor,
-          border: Border.all(color: Color.rgba(129, 140, 248, 0.4), width: 1.px),
+          border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
           padding: Padding.symmetric(vertical: 4.px, horizontal: 12.px),
           radius: BorderRadius.all(Radius.circular(14.px)),
           fontSize: 0.85.rem,
@@ -191,14 +191,14 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           margin: Margin.only(bottom: 1.rem),
         ),
         css('.tag-chip').styles(
-          backgroundColor: Color.rgba(56, 189, 248, 0.15),
+          backgroundColor: Color.rgba(251, 197, 26, 0.15),
           color: primaryColor,
           padding: Padding.symmetric(vertical: 6.px, horizontal: 14.px),
           radius: BorderRadius.all(Radius.circular(20.px)),
           margin: Margin.only(right: 8.px, bottom: 8.px),
           fontSize: 0.9.rem,
           fontWeight: FontWeight.w600,
-          border: Border.all(color: Color.rgba(56, 189, 248, 0.3), width: 1.px),
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
         ),
       ]),
       css('.project-links', [

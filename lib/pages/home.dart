@@ -103,14 +103,14 @@ class _HomeState extends State<Home> {
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(0, 0, 0, 0.4)),
         ),
         css('.hero-badge').styles(
-          backgroundColor: Color.rgba(56, 189, 248, 0.12),
+          backgroundColor: Color.rgba(251, 197, 26, 0.12),
           color: primaryColor,
           padding: Padding.symmetric(vertical: 8.px, horizontal: 16.px),
           radius: BorderRadius.all(Radius.circular(20.px)),
           fontSize: 0.95.rem,
           fontWeight: FontWeight.w600,
           margin: Margin.only(bottom: 1.2.rem),
-          border: Border.all(color: Color.rgba(56, 189, 248, 0.3), width: 1.px),
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
         ),
         css('h1').styles(
           fontSize: 3.8.rem,
@@ -146,17 +146,33 @@ class _HomeState extends State<Home> {
             fontSize: 1.05.rem,
             textDecoration: TextDecoration(line: TextDecorationLine.none),
             margin: Margin.symmetric(horizontal: 8.px, vertical: 6.px),
+            transition: Transition('all', duration: Duration(milliseconds: 300)),
           ),
-          css('.btn-primary').styles(
-            backgroundColor: primaryColor,
-            color: backgroundColor,
-            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(56, 189, 248, 0.4)),
-          ),
-          css('.btn-secondary').styles(
-            backgroundColor: Color.rgba(255, 255, 255, 0.06),
-            color: textColor,
-            border: Border.all(color: surfaceBorder, width: 1.px),
-          ),
+          css('.btn-primary', [
+            css('&').styles(
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
+              transition: Transition('all', duration: Duration(milliseconds: 300)),
+            ),
+            css('&:hover').styles(
+              backgroundColor: secondaryColor,
+              color: textColor,
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 20.px, color: Color.rgba(255, 87, 123, 0.5)),
+            ),
+          ]),
+          css('.btn-secondary', [
+            css('&').styles(
+              backgroundColor: Color.rgba(255, 255, 255, 0.06),
+              color: textColor,
+              border: Border.all(color: surfaceBorder, width: 1.px),
+              transition: Transition('all', duration: Duration(milliseconds: 300)),
+            ),
+            css('&:hover').styles(
+              border: Border.all(color: Color('#ffffff'), width: 1.px),
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(255, 255, 255, 0.15)),
+            ),
+          ]),
         ]),
       ]),
       css('.projects-section', [
@@ -257,9 +273,9 @@ class _ProjectCard extends StatelessComponent {
           css('.main-tag-badge').styles(
             display: Display.inlineFlex,
             alignItems: AlignItems.center,
-            backgroundColor: Color.rgba(129, 140, 248, 0.16),
+            backgroundColor: Color.rgba(255, 87, 123, 0.16),
             color: accentColor,
-            border: Border.all(color: Color.rgba(129, 140, 248, 0.4), width: 1.px),
+            border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
             padding: Padding.symmetric(vertical: 3.px, horizontal: 10.px),
             radius: BorderRadius.all(Radius.circular(12.px)),
             fontSize: 0.78.rem,
@@ -275,7 +291,7 @@ class _ProjectCard extends StatelessComponent {
           fontSize: 0.8.rem,
           fontWeight: FontWeight.w600,
           color: primaryColor,
-          backgroundColor: Color.rgba(56, 189, 248, 0.12),
+          backgroundColor: Color.rgba(251, 197, 26, 0.12),
           padding: Padding.symmetric(vertical: 4.px, horizontal: 10.px),
           radius: BorderRadius.all(Radius.circular(12.px)),
           margin: Margin.only(right: 6.px, bottom: 4.px),
