@@ -25,8 +25,8 @@ class Header extends StatelessComponent {
         Link(
           to: '/',
           child: div(classes: 'brand-logo', [
-            img(src: '/images/logo1.png', alt: 'Ibrahim'),
-            img(src: '/images/logo2.png', alt: 'AlQyas'),
+            img(src: 'images/logo1.png', alt: 'Ibrahim'),
+            img(src: 'images/logo2.png', alt: 'AlQyas'),
           ]),
         ),
         nav([

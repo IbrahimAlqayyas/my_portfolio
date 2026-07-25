@@ -22,7 +22,11 @@ void main() {
   );
 
   runApp(Document(
-    title: 'my_portfolio',
+    base: '/my_portfolio/',
+    title: 'Ibrahim AlQyas - Mobile & Web Software Engineer',
+    head: [
+      link(rel: 'icon', href: 'favicon.ico'),
+    ],
     styles: [
       css.import('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'),
       css('html, body').styles(
