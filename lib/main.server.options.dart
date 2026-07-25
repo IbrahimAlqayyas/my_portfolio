@@ -5,6 +5,7 @@
 // Generated with jaspr_builder
 
 import 'package:jaspr/server.dart';
+import 'package:my_portfolio/components/cosmic_canvas.dart' as _cosmic_canvas;
 import 'package:my_portfolio/components/header.dart' as _header;
 import 'package:my_portfolio/pages/about.dart' as _about;
 import 'package:my_portfolio/pages/contact.dart' as _contact;
@@ -32,6 +33,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
   clientId: 'main.client.dart.js',
   clients: {_app.App: ClientTarget<_app.App>('app')},
   styles: () => [
+    ..._cosmic_canvas.CosmicCanvas.styles,
     ..._header.Header.styles,
     ..._about.About.styles,
     ..._contact.Contact.styles,

@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
+import 'components/cosmic_canvas.dart';
 import 'components/header.dart';
 import 'pages/about.dart';
 import 'pages/contact.dart';
@@ -31,6 +32,7 @@ class AppState extends State<App> {
   @override
   Component build(BuildContext context) {
     return div(classes: 'main', [
+      const CosmicCanvas(),
       Router(routes: [
         ShellRoute(
           builder: (context, state, child) => Component.fragment([
@@ -57,6 +59,8 @@ class AppState extends State<App> {
         flexDirection: FlexDirection.column,
         alignItems: AlignItems.center,
         width: 100.percent,
+        position: Position.relative(),
+        zIndex: ZIndex(1),
       ),
       css('section').styles(
         display: Display.flex,
@@ -66,6 +70,7 @@ class AppState extends State<App> {
         flex: Flex(grow: 1),
       ),
     ]),
+    ...CosmicCanvas.styles,
     ...ProjectDetailPage.styles,
   ];
 }

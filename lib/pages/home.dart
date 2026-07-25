@@ -97,10 +97,11 @@ class _HomeState extends State<Home> {
           textAlign: TextAlign.center,
           padding: Padding.symmetric(vertical: 4.rem, horizontal: 2.rem),
           margin: Margin.only(bottom: 4.rem),
-          backgroundColor: surfaceColor,
+          backgroundColor: Color.rgba(30, 41, 59, 0.8),
           border: Border.all(color: surfaceBorder, width: 1.px),
           radius: BorderRadius.all(Radius.circular(24.px)),
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(0, 0, 0, 0.4)),
+          raw: {'backdrop-filter': 'blur(12px)', '-webkit-backdrop-filter': 'blur(12px)'},
         ),
         css('.hero-badge').styles(
           backgroundColor: Color.rgba(251, 197, 26, 0.12),
@@ -242,7 +243,7 @@ class _ProjectCard extends StatelessComponent {
     css('.project-card', [
       css('&').styles(
         width: 320.px,
-        backgroundColor: surfaceColor,
+        backgroundColor: Color.rgba(30, 41, 59, 0.8),
         border: Border.all(color: surfaceBorder, width: 1.px),
         radius: BorderRadius.all(Radius.circular(20.px)),
         overflow: Overflow.hidden,
@@ -250,6 +251,7 @@ class _ProjectCard extends StatelessComponent {
         flexDirection: FlexDirection.column,
         margin: Margin.all(12.px),
         shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 16.px, color: Color.rgba(0, 0, 0, 0.3)),
+        raw: {'backdrop-filter': 'blur(12px)', '-webkit-backdrop-filter': 'blur(12px)'},
       ),
       css('&:hover').styles(
         border: Border.all(color: primaryColor, width: 1.px),
