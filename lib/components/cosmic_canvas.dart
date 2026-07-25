@@ -35,13 +35,73 @@ setInterval(() => {
     let height = 0;
     let dpr = 1;
 
+
+    const colors = [
+      '#fbc51a',
+      '#ff577b',
+      '#6ef27b',
+      '#38bdf8',
+      '#ffffff'
+    ];
+
+    const particles = [];
+    const stardust = [];
+
+
+function updateParticleCount() {
+
+  const target = Math.min(
+    Math.floor(width * height / 2800),
+    350
+  );
+
+  while (particles.length < target) {
+
+    particles.push({
+
+      x: Math.random() * width,
+      y: Math.random() * height,
+
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+
+      radius: Math.random() * 0.8 + 0.6,
+
+      color: colors[Math.floor(Math.random() * colors.length)],
+
+      alpha: Math.random() * 0.75 + 0.25,
+
+      pulse: Math.random() * Math.PI * 2
+
+    });
+
+  }
+
+  while (particles.length > target) {
+    particles.pop();
+  }
+
+}
+
 function resizeCanvas() {
 
-  const dpr = window.devicePixelRatio || 1;
+ const oldWidth = width || window.innerWidth;
+const oldHeight = height || window.innerHeight;
 
-  width = window.innerWidth;
-  height = window.innerHeight;
+width = window.innerWidth;
+height = window.innerHeight;
+const scaleX = width / oldWidth;
+const scaleY = height / oldHeight;
 
+for (const p of particles) {
+  p.x *= scaleX;
+  p.y *= scaleY;
+}
+
+for (const s of stardust) {
+  s.x *= scaleX;
+  s.y *= scaleY;
+}
 
   canvas.style.width = width + "px";
   canvas.style.height = height + "px";
@@ -51,15 +111,19 @@ function resizeCanvas() {
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr, dpr);
+  updateParticleCount();
 }
 
     resizeCanvas();
+    updateParticleCount();
 
 requestAnimationFrame(() => {
     resizeCanvas();
+    updateParticleCount();
 
     requestAnimationFrame(() => {
         resizeCanvas();
+        updateParticleCount();
 
         setTimeout(resizeCanvas, 50);
         setTimeout(resizeCanvas, 150);
@@ -85,43 +149,6 @@ requestAnimationFrame(() => {
       mouse.active = false;
     });
 
-    const colors = [
-      '#fbc51a',
-      '#ff577b',
-      '#6ef27b',
-      '#38bdf8',
-      '#ffffff'
-    ];
-
-    const particles = [];
-    const stardust = [];
-
-    const numParticles = Math.min(
-      Math.floor(width * height / 4000),
-      250
-    );
-
-    for (let i = 0; i < numParticles; i++) {
-
-      particles.push({
-
-        x: Math.random() * width,
-        y: Math.random() * height,
-
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-
-        radius: Math.random() * 0.8 + 0.6,
-
-        color: colors[Math.floor(Math.random() * colors.length)],
-
-        alpha: Math.random() * 0.75 + 0.25,
-
-        pulse: Math.random() * Math.PI * 2
-
-      });
-
-    }
 
     function createStardust(x, y) {
 
