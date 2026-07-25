@@ -4,6 +4,7 @@ import 'package:jaspr_router/jaspr_router.dart';
 
 import 'components/cosmic_canvas.dart';
 import 'components/header.dart';
+import 'data/projects_data.dart';
 import 'pages/about.dart';
 import 'pages/contact.dart';
 import 'pages/home.dart';
@@ -41,7 +42,12 @@ class AppState extends State<App> {
           ]),
           routes: [
             Route(path: '/', title: 'Home', builder: (context, state) => const Home()),
-            Route(path: '/projects/:id', title: 'Project Details', builder: (context, state) => ProjectDetailPage(projectId: state.params['id'] ?? '')),
+            for (var project in projectsList)
+              Route(
+                path: '/projects/${project.id}',
+                title: project.title,
+                builder: (context, state) => ProjectDetailPage(projectId: project.id),
+              ),
             Route(path: '/about', title: 'About', builder: (context, state) => const About()),
             Route(path: '/contact', title: 'Contact', builder: (context, state) => const Contact()),
           ],
