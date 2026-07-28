@@ -21,39 +21,41 @@ void main() {
     options: defaultServerOptions,
   );
 
-  runApp(Document(
-    base: '/my_portfolio/',
-    title: 'Ibrahim AlQyas - Mobile & Web Software Engineer',
-    head: [
-      link(rel: 'icon', href: 'favicon.ico'),
-    ],
-    styles: [
-      css.import('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'),
-      css('html, body').styles(
-        raw: {'scroll-behavior': 'smooth'},
-        width: 100.percent,
-        minHeight: 100.vh,
-        padding: Padding.zero,
-        margin: Margin.zero,
-        backgroundColor: backgroundColor,
-        color: textColor,
-        fontFamily: const FontFamily.list([FontFamily('Inter'), FontFamilies.sansSerif]),
-      ),
-      css('h1').styles(
-        margin: Margin.unset,
-        fontSize: 3.5.rem,
-        fontWeight: FontWeight.w800,
-        color: textColor,
-      ),
-      css('p').styles(
-        color: textMutedColor,
-        fontSize: 1.1.rem,
-      ),
-      css('a, a:hover, a:visited, a:active').styles(
-        textDecoration: TextDecoration(line: TextDecorationLine.none),
-        cursor: Cursor.pointer,
-      ),
-    ],
-    body: App(),
-  ));
+  runApp(
+    Document(
+      base: kDebugMode ? '/' : '/my_portfolio/',
+      title: 'Ibrahim AlQyas - Mobile & Web Software Engineer',
+      head: [
+        link(rel: 'icon', href: 'favicon.ico'),
+      ],
+      styles: [
+        css.import('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'),
+        css('html, body').styles(
+          raw: {'scroll-behavior': 'smooth'},
+          width: 100.percent,
+          minHeight: 100.vh,
+          padding: Padding.zero,
+          margin: Margin.zero,
+          backgroundColor: backgroundColor,
+          color: textColor,
+          fontFamily: const FontFamily.list([FontFamily('Inter'), FontFamilies.sansSerif]),
+        ),
+        css('h1').styles(
+          margin: Margin.unset,
+          fontSize: 3.5.rem,
+          fontWeight: FontWeight.w800,
+          color: textColor,
+        ),
+        css('p').styles(
+          color: textMutedColor,
+          fontSize: 1.1.rem,
+        ),
+        css('a, a:hover, a:visited, a:active').styles(
+          textDecoration: TextDecoration(line: TextDecorationLine.none),
+          cursor: Cursor.pointer,
+        ),
+      ],
+      body: App(),
+    ),
+  );
 }
