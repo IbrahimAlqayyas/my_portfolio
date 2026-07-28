@@ -15,6 +15,7 @@ import 'app.dart';
 import 'main.server.options.dart';
 
 import 'constants/theme.dart';
+import 'utils/asset_helper.dart';
 
 void main() {
   Jaspr.initializeApp(
@@ -26,7 +27,7 @@ void main() {
       base: kDebugMode ? '/' : '/my_portfolio/',
       title: 'Ibrahim AlQyas - Mobile & Web Software Engineer',
       head: [
-        link(rel: 'icon', href: 'favicon.ico'),
+        link(rel: 'icon', href: assetUrl('favicon.ico')),
       ],
       styles: [
         css.import('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'),

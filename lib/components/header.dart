@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
 import '../constants/theme.dart';
+import '../utils/asset_helper.dart';
 
 class Header extends StatelessComponent {
   final String? activePath;
@@ -25,8 +26,8 @@ class Header extends StatelessComponent {
         Link(
           to: '/',
           child: div(classes: 'brand-logo', [
-            img(src: 'images/logo1.png', alt: 'Ibrahim'),
-            img(src: 'images/logo2.png', alt: 'AlQyas'),
+            img(src: assetUrl('images/logo1.png'), alt: 'Ibrahim'),
+            img(src: assetUrl('images/logo2.png'), alt: 'AlQyas'),
           ]),
         ),
         nav([
