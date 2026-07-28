@@ -29,6 +29,7 @@ class AppState extends State<App> {
       print("Hello server");
     }
   }
+  
 
   @override
   Component build(BuildContext context) {
@@ -42,7 +43,7 @@ class AppState extends State<App> {
           ]),
           routes: [
             Route(path: '/', title: 'Home', builder: (context, state) => const Home()),
-            
+
             for (var project in projectsList)
               Route(
                 path: '/projects/${project.id}',
