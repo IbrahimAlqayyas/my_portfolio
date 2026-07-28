@@ -42,6 +42,7 @@ class AppState extends State<App> {
           ]),
           routes: [
             Route(path: '/', title: 'Home', builder: (context, state) => const Home()),
+            
             for (var project in projectsList)
               Route(
                 path: '/projects/${project.id}',
