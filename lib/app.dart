@@ -59,11 +59,6 @@ class AppState extends State<App> {
                 builder: (context, state) => ProjectDetailPage(projectId: project.id),
               ),
             Route(
-              path: '/projects/:id',
-              title: 'Project Detail - Ibrahim AlQyas',
-              builder: (context, state) => ProjectDetailPage(projectId: state.params['id'] ?? ''),
-            ),
-            Route(
               path: '/courses',
               title: 'Courses & Resources - Ibrahim AlQyas',
               builder: (context, state) => const CoursesPage(),
