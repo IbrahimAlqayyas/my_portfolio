@@ -33,12 +33,22 @@ class Header extends StatelessComponent {
         nav([
           for (var route in [
             (label: 'Home', path: '/'),
+            (label: 'Software', path: '/software'),
+            (label: 'Engineering', path: '/engineering'),
+            (label: 'Portfolio', path: '/projects'),
+            (label: 'Courses', path: '/courses'),
             (label: 'About', path: '/about'),
             (label: 'Contact', path: '/contact'),
           ])
-            div(classes: currentPath == route.path ? 'active' : null, [
-              Link(to: route.path, child: Component.text(route.label)),
-            ]),
+            div(
+              classes: (currentPath == route.path ||
+                      (route.path != '/' && currentPath.startsWith(route.path)))
+                  ? 'active'
+                  : null,
+              [
+                Link(to: route.path, child: Component.text(route.label)),
+              ],
+            ),
         ]),
       ]),
     ]);
@@ -50,19 +60,29 @@ class Header extends StatelessComponent {
       css('&').styles(
         display: Display.flex,
         width: 100.percent,
-        padding: Padding.symmetric(vertical: 1.5.rem, horizontal: 0.px),
+        padding: Padding.symmetric(vertical: 1.2.rem, horizontal: 0.px),
         justifyContent: JustifyContent.center,
         boxSizing: BoxSizing.borderBox,
+        position: Position.sticky(top: 0.px),
+        zIndex: ZIndex(100),
+        backgroundColor: Color.rgba(15, 23, 42, 0.85),
+        raw: {
+          'backdrop-filter': 'blur(16px)',
+          '-webkit-backdrop-filter': 'blur(16px)',
+          'border-bottom': '1px solid rgba(255, 255, 255, 0.05)',
+        },
       ),
       css('.header-inner', [
         css('&').styles(
           display: Display.flex,
           maxWidth: 1200.px,
           width: 100.percent,
-          padding: Padding.symmetric(horizontal: 2.rem),
+          padding: Padding.symmetric(horizontal: 1.5.rem),
           boxSizing: BoxSizing.borderBox,
           justifyContent: JustifyContent.spaceBetween,
           alignItems: AlignItems.center,
+          flexWrap: FlexWrap.wrap,
+          gap: Gap.all(1.rem),
         ),
         css('a').styles(
           textDecoration: TextDecoration(line: TextDecorationLine.none),
@@ -80,7 +100,8 @@ class Header extends StatelessComponent {
               display: Display.block,
               transition: Transition('filter', duration: Duration(milliseconds: 300)),
               raw: {
-                'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+                'filter':
+                    'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
               },
             ),
             css('&:last-child').styles(
@@ -90,7 +111,8 @@ class Header extends StatelessComponent {
             ),
             css('&:hover').styles(
               raw: {
-                'filter': 'drop-shadow(0 0 6px rgba(255, 87, 123, 0.6)) drop-shadow(0 0 10px rgba(255, 87, 123, 0.3))',
+                'filter':
+                    'drop-shadow(0 0 6px rgba(255, 87, 123, 0.6)) drop-shadow(0 0 10px rgba(255, 87, 123, 0.3))',
               },
             ),
           ]),
@@ -98,23 +120,35 @@ class Header extends StatelessComponent {
         css('nav', [
           css('&').styles(
             display: Display.flex,
-            height: 3.2.em,
+            height: 2.8.em,
             radius: BorderRadius.all(Radius.circular(16.px)),
-            overflow: Overflow.clip,
+            overflow: Overflow.visible,
             justifyContent: JustifyContent.spaceBetween,
-            backgroundColor: surfaceColor,
-            border: Border.all(color: surfaceBorder, width: 1.px),
-            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 20.px, color: Color.rgba(0, 0, 0, 0.3)),
+            backgroundColor: cardBackground,
+            border: Border.all(color: cardBorder, width: 1.px),
+            shadow: BoxShadow(
+              offsetX: 0.px,
+              offsetY: 4.px,
+              blur: 20.px,
+              color: Color.rgba(0, 0, 0, 0.3),
+            ),
+            raw: {
+              ...cardBackdropFilter,
+              'overflow-x': 'auto',
+              'white-space': 'nowrap',
+            },
           ),
           css('a', [
             css('&').styles(
               display: Display.flex,
               height: 100.percent,
-              padding: Padding.symmetric(horizontal: 1.6.em),
+              padding: Padding.symmetric(horizontal: 1.1.em),
               alignItems: AlignItems.center,
               color: textMutedColor,
               fontWeight: FontWeight.w600,
+              fontSize: 0.9.rem,
               textDecoration: TextDecoration(line: TextDecorationLine.none),
+              transition: Transition('all', duration: Duration(milliseconds: 200)),
             ),
             css('&:hover').styles(
               color: textColor,
@@ -130,7 +164,7 @@ class Header extends StatelessComponent {
             css('&::before').styles(
               content: '',
               display: Display.block,
-              position: Position.absolute(bottom: 0.4.em, left: 1.4.em, right: 1.4.em),
+              position: Position.absolute(bottom: 0.3.em, left: 1.em, right: 1.em),
               height: 3.px,
               radius: BorderRadius.circular(2.px),
               backgroundColor: primaryColor,
@@ -144,10 +178,10 @@ class Header extends StatelessComponent {
       '0%, 40%': Styles(
         raw: {
           'opacity': '1',
-          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+          'filter':
+              'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
         },
       ),
-      // Burst 1: 4 Movements (41% - 48%)
       '41%': Styles(
         raw: {
           'opacity': '0.2',
@@ -193,10 +227,10 @@ class Header extends StatelessComponent {
       '48%, 82%': Styles(
         raw: {
           'opacity': '1',
-          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+          'filter':
+              'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
         },
       ),
-      // Burst 2: 4 Movements (83% - 90%)
       '83%': Styles(
         raw: {
           'opacity': '0.25',
@@ -242,7 +276,8 @@ class Header extends StatelessComponent {
       '90%, 100%': Styles(
         raw: {
           'opacity': '1',
-          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+          'filter':
+              'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
         },
       ),
     }),

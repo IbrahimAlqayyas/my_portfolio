@@ -3,12 +3,17 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
 import 'components/cosmic_canvas.dart';
+import 'components/footer.dart';
 import 'components/header.dart';
 import 'data/projects_data.dart';
 import 'pages/about.dart';
 import 'pages/contact.dart';
+import 'pages/courses.dart';
+import 'pages/engineering_hub.dart';
 import 'pages/home.dart';
+import 'pages/portfolio.dart';
 import 'pages/project_detail.dart';
+import 'pages/software_hub.dart';
 
 @client
 class App extends StatefulComponent {
@@ -19,18 +24,6 @@ class App extends StatefulComponent {
 }
 
 class AppState extends State<App> {
-
-  @override
-  void initState() {
-    super.initState();
-    if (kIsWeb) {
-      print("Hello client");
-    } else {
-      print("Hello server");
-    }
-  }
-  
-
   @override
   Component build(BuildContext context) {
     return div(classes: 'main', [
@@ -40,18 +33,43 @@ class AppState extends State<App> {
           builder: (context, state, child) => Component.fragment([
             Header(activePath: state.location),
             child,
+            const Footer(),
           ]),
           routes: [
-            Route(path: '/', title: 'Home', builder: (context, state) => const Home()),
-
+            Route(path: '/', title: 'Home - Ibrahim AlQyas', builder: (context, state) => const Home()),
+            Route(
+              path: '/software',
+              title: 'Software & Flutter Development - Ibrahim AlQyas',
+              builder: (context, state) => const SoftwareHub(),
+            ),
+            Route(
+              path: '/engineering',
+              title: 'E&I Engineering & Inspection - Ibrahim AlQyas',
+              builder: (context, state) => const EngineeringHub(),
+            ),
+            Route(
+              path: '/projects',
+              title: 'Shared Portfolio - Ibrahim AlQyas',
+              builder: (context, state) => const PortfolioPage(),
+            ),
             for (var project in projectsList)
               Route(
                 path: '/projects/${project.id}',
-                title: project.title,
+                title: '${project.title} - Ibrahim AlQyas',
                 builder: (context, state) => ProjectDetailPage(projectId: project.id),
               ),
-            Route(path: '/about', title: 'About', builder: (context, state) => const About()),
-            Route(path: '/contact', title: 'Contact', builder: (context, state) => const Contact()),
+            Route(
+              path: '/projects/:id',
+              title: 'Project Detail - Ibrahim AlQyas',
+              builder: (context, state) => ProjectDetailPage(projectId: state.params['id'] ?? ''),
+            ),
+            Route(
+              path: '/courses',
+              title: 'Courses & Resources - Ibrahim AlQyas',
+              builder: (context, state) => const CoursesPage(),
+            ),
+            Route(path: '/about', title: 'About - Ibrahim AlQyas', builder: (context, state) => const About()),
+            Route(path: '/contact', title: 'Contact - Ibrahim AlQyas', builder: (context, state) => const Contact()),
           ],
         ),
       ]),
@@ -79,6 +97,15 @@ class AppState extends State<App> {
       ),
     ]),
     ...CosmicCanvas.styles,
+    ...Header.styles,
+    ...Footer.styles,
+    ...Home.styles,
+    ...SoftwareHub.styles,
+    ...EngineeringHub.styles,
+    ...PortfolioPage.styles,
+    ...CoursesPage.styles,
+    ...About.styles,
+    ...Contact.styles,
     ...ProjectDetailPage.styles,
   ];
 }

@@ -33,21 +33,29 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         div(classes: 'not-found', [
           h1([Component.text('Project Not Found')]),
           p([Component.text('The project you are looking for does not exist.')]),
-          Link(to: '/', child: Component.text('← Back to Portfolio')),
+          Link(to: '/projects', child: Component.text('← Back to Shared Portfolio')),
         ]),
       ]);
     }
 
+    final isSoftware = project.category == 'software';
+
     return section(classes: 'project-detail-container', [
       // Top Navigation back link
       div(classes: 'back-nav', [
-        Link(to: '/', child: Component.text('← Back to Portfolio')),
+        Link(to: '/projects', child: Component.text('← Back to Shared Portfolio')),
       ]),
 
       // Hero Header
       div(classes: 'project-hero', [
-        div(classes: 'main-tag-wrapper', [
+        div(classes: 'hero-badges-row', [
+          span(
+            classes: 'category-badge ${isSoftware ? "badge-software" : "badge-engineering"}',
+            [Component.text(isSoftware ? '💻 Software & Mobile App' : '⚡ E&I Industrial Engineering')],
+          ),
           span(classes: 'main-tag-badge', [Component.text(project.mainTag)]),
+          if (project.clientOrScope != null)
+            span(classes: 'scope-tag', [Component.text('Scope: ${project.clientOrScope!}')]),
         ]),
         div(classes: 'tags-list', [
           for (var tag in project.tags) span(classes: 'tag-chip', [Component.text(tag)]),
@@ -71,19 +79,37 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               classes: 'btn btn-secondary',
               [Component.text('💻 Source Code')],
             ),
+          Link(
+            to: '/contact',
+            classes: 'btn btn-secondary',
+            child: Component.text('Discuss Similar Project →'),
+          ),
         ]),
       ]),
 
       // Overview / Full Description Section
       div(classes: 'detail-section', [
-        h2([Component.text('Project Overview')]),
+        h2([Component.text('Project Overview & Architecture')]),
         p(classes: 'full-description', [Component.text(project.fullDescription)]),
       ]),
+
+      // Key Deliverables & Engineering Outcomes
+      if (project.deliverables.isNotEmpty)
+        div(classes: 'detail-section', [
+          h2([Component.text('🎯 Key Deliverables & Outcomes')]),
+          ul(classes: 'deliverables-list', [
+            for (var item in project.deliverables)
+              li([
+                span(classes: 'check-bullet', [Component.text('✓')]),
+                span([Component.text(item)]),
+              ]),
+          ]),
+        ]),
 
       // 1. Image Gallery Section
       if (project.images.isNotEmpty)
         div(classes: 'detail-section', [
-          h2([Component.text('📷 Screenshots & Gallery')]),
+          h2([Component.text('📷 Documentation & Visual Gallery')]),
           div(classes: 'gallery-grid', [
             for (var imgUrl in project.images)
               div(classes: 'media-card', [
@@ -111,7 +137,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
       // 3. Animated GIFs Section
       if (project.gifs.isNotEmpty)
         div(classes: 'detail-section', [
-          h2([Component.text('✨ Animated GIFs & Interactions')]),
+          h2([Component.text('✨ Animated Demos & Interactions')]),
           div(classes: 'gallery-grid', [
             for (var gifUrl in project.gifs)
               div(classes: 'media-card gif-card', [
@@ -119,6 +145,16 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               ]),
           ]),
         ]),
+
+      // Bottom Navigation / CTA
+      div(classes: 'detail-bottom-cta', [
+        h3([Component.text('Interested in replicating these results?')]),
+        p([Component.text('Let’s discuss your technical scope or software application requirements.')]),
+        div(classes: 'bottom-actions', [
+          Link(to: '/contact', classes: 'btn btn-primary', child: Component.text('Schedule Consultation / Hire →')),
+          Link(to: '/projects', classes: 'btn btn-secondary', child: Component.text('Browse More Projects →')),
+        ]),
+      ]),
     ]);
   }
 
@@ -129,6 +165,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         width: 100.percent,
         padding: Padding.all(2.rem),
         boxSizing: BoxSizing.borderBox,
+        display: Display.flex,
+        flexDirection: FlexDirection.column,
+        alignItems: AlignItems.center,
       ),
       css('.back-nav', [
         css('&').styles(
@@ -150,140 +189,264 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         css('&').styles(
           width: 100.percent,
           boxSizing: BoxSizing.borderBox,
-          backgroundColor: surfaceColor,
-          border: Border.all(color: surfaceBorder, width: 1.px),
-          radius: BorderRadius.all(Radius.circular(20.px)),
+          backgroundColor: cardBackground,
+          border: Border.all(color: cardBorder, width: 1.px),
+          radius: BorderRadius.all(Radius.circular(24.px)),
           padding: Padding.all(2.5.rem),
           margin: Margin.only(bottom: 3.rem),
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(0, 0, 0, 0.3)),
+          raw: cardBackdropFilter,
         ),
+        css('.hero-badges-row', [
+          css('&').styles(
+            display: Display.flex,
+            alignItems: AlignItems.center,
+            flexWrap: FlexWrap.wrap,
+            gap: Gap.all(10.px),
+            margin: Margin.only(bottom: 1.rem),
+          ),
+          css('.category-badge').styles(
+            padding: Padding.symmetric(vertical: 4.px, horizontal: 12.px),
+            radius: BorderRadius.all(Radius.circular(10.px)),
+            fontSize: 0.82.rem,
+            fontWeight: FontWeight.w700,
+          ),
+          css('.badge-software').styles(
+            backgroundColor: Color.rgba(251, 197, 26, 0.15),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
+          ),
+          css('.badge-engineering').styles(
+            backgroundColor: Color.rgba(255, 87, 123, 0.15),
+            color: secondaryColor,
+            border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
+          ),
+          css('.main-tag-badge').styles(
+            backgroundColor: Color.rgba(255, 255, 255, 0.08),
+            color: textColor,
+            border: Border.all(color: surfaceBorder, width: 1.px),
+            padding: Padding.symmetric(vertical: 4.px, horizontal: 10.px),
+            radius: BorderRadius.all(Radius.circular(10.px)),
+            fontSize: 0.82.rem,
+            fontWeight: FontWeight.w600,
+          ),
+          css('.scope-tag').styles(
+            color: textMutedColor,
+            fontSize: 0.85.rem,
+          ),
+        ]),
         css('h1').styles(
-          fontSize: 3.rem,
+          fontSize: 3.2.rem,
           fontWeight: FontWeight.w800,
-          margin: Margin.symmetric(vertical: 0.5.rem),
+          color: textColor,
+          margin: Margin.only(bottom: 0.8.rem),
+          lineHeight: 1.2.em,
         ),
         css('.project-subtitle').styles(
-          fontSize: 1.3.rem,
+          fontSize: 1.25.rem,
           color: textMutedColor,
-          margin: Margin.only(bottom: 1.5.rem),
+          lineHeight: 1.6.em,
+          margin: Margin.only(bottom: 2.rem),
         ),
-      ]),
-      css('.main-tag-wrapper', [
-        css('&').styles(
-          margin: Margin.only(bottom: 0.8.rem),
-        ),
-        css('.main-tag-badge').styles(
-          display: Display.inlineFlex,
-          alignItems: AlignItems.center,
-          backgroundColor: Color.rgba(255, 87, 123, 0.16),
-          color: accentColor,
-          border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
-          padding: Padding.symmetric(vertical: 4.px, horizontal: 12.px),
-          radius: BorderRadius.all(Radius.circular(14.px)),
-          fontSize: 0.85.rem,
-          fontWeight: FontWeight.w700,
-        ),
-      ]),
-      css('.tags-list', [
-        css('&').styles(
-          display: Display.flex,
-          flexWrap: FlexWrap.wrap,
-          margin: Margin.only(bottom: 1.rem),
-        ),
-        css('.tag-chip').styles(
-          backgroundColor: Color.rgba(251, 197, 26, 0.15),
-          color: primaryColor,
-          padding: Padding.symmetric(vertical: 6.px, horizontal: 14.px),
-          radius: BorderRadius.all(Radius.circular(20.px)),
-          margin: Margin.only(right: 8.px, bottom: 8.px),
-          fontSize: 0.9.rem,
-          fontWeight: FontWeight.w600,
-          border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
-        ),
-      ]),
-      css('.project-links', [
-        css('&').styles(
-          display: Display.flex,
-          flexWrap: FlexWrap.wrap,
-          margin: Margin.only(top: 1.5.rem),
-        ),
-        css('.btn').styles(
-          display: Display.inlineFlex,
-          alignItems: AlignItems.center,
-          padding: Padding.symmetric(vertical: 12.px, horizontal: 24.px),
-          radius: BorderRadius.all(Radius.circular(12.px)),
-          fontWeight: FontWeight.w700,
-          textDecoration: TextDecoration(line: TextDecorationLine.none),
-          margin: Margin.only(right: 1.rem, bottom: 0.5.rem),
-        ),
-        css('.btn-primary').styles(
-          backgroundColor: primaryColor,
-          color: backgroundColor,
-        ),
-        css('.btn-secondary').styles(
-          backgroundColor: Color.rgba(255, 255, 255, 0.08),
-          color: textColor,
-          border: Border.all(color: surfaceBorder, width: 1.px),
-        ),
+        css('.tags-list', [
+          css('&').styles(
+            display: Display.flex,
+            flexWrap: FlexWrap.wrap,
+            margin: Margin.only(bottom: 1.5.rem),
+          ),
+          css('.tag-chip').styles(
+            backgroundColor: Color.rgba(251, 197, 26, 0.1),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
+            padding: Padding.symmetric(vertical: 6.px, horizontal: 12.px),
+            radius: BorderRadius.all(Radius.circular(12.px)),
+            fontSize: 0.88.rem,
+            fontWeight: FontWeight.w600,
+            margin: Margin.only(right: 8.px, bottom: 8.px),
+          ),
+        ]),
+        css('.project-links', [
+          css('&').styles(
+            display: Display.flex,
+            flexWrap: FlexWrap.wrap,
+            gap: Gap.all(12.px),
+          ),
+          css('.btn').styles(
+            display: Display.inlineFlex,
+            alignItems: AlignItems.center,
+            padding: Padding.symmetric(vertical: 12.px, horizontal: 24.px),
+            radius: BorderRadius.all(Radius.circular(12.px)),
+            fontWeight: FontWeight.w700,
+            fontSize: 1.05.rem,
+            textDecoration: TextDecoration(line: TextDecorationLine.none),
+            transition: Transition('all', duration: Duration(milliseconds: 200)),
+          ),
+          css('.btn-primary', [
+            css('&').styles(
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+            ),
+            css('&:hover').styles(
+              backgroundColor: secondaryColor,
+              color: textColor,
+            ),
+          ]),
+          css('.btn-secondary', [
+            css('&').styles(
+              backgroundColor: Color.rgba(255, 255, 255, 0.06),
+              color: textColor,
+              border: Border.all(color: surfaceBorder, width: 1.px),
+            ),
+            css('&:hover').styles(
+              raw: {'border-color': '#ffffff'},
+            ),
+          ]),
+        ]),
       ]),
       css('.detail-section', [
         css('&').styles(
-          margin: Margin.only(bottom: 3.5.rem),
+          width: 100.percent,
+          backgroundColor: cardBackground,
+          border: Border.all(color: cardBorder, width: 1.px),
+          radius: BorderRadius.all(Radius.circular(20.px)),
+          padding: Padding.all(2.rem),
+          margin: Margin.only(bottom: 2.5.rem),
+          boxSizing: BoxSizing.borderBox,
+          raw: cardBackdropFilter,
         ),
         css('h2').styles(
           fontSize: 1.8.rem,
           fontWeight: FontWeight.w700,
           color: textColor,
           margin: Margin.only(bottom: 1.2.rem),
-          border: Border.only(
-            bottom: BorderSide.solid(color: surfaceBorder, width: 1.px),
-          ),
-          padding: Padding.only(bottom: 0.5.rem),
         ),
         css('.full-description').styles(
-          fontSize: 1.15.rem,
-          lineHeight: 1.8.em,
+          fontSize: 1.1.rem,
           color: textMutedColor,
-          whiteSpace: WhiteSpace.preWrap,
+          lineHeight: 1.7.em,
+          whiteSpace: WhiteSpace.preLine,
         ),
+        css('.deliverables-list', [
+          css('&').styles(
+            listStyle: ListStyle.none,
+            padding: Padding.zero,
+            margin: Margin.zero,
+          ),
+          css('li', [
+            css('&').styles(
+              display: Display.flex,
+              alignItems: AlignItems.center,
+              fontSize: 1.05.rem,
+              color: textColor,
+              margin: Margin.only(bottom: 10.px),
+            ),
+            css('.check-bullet').styles(
+              color: emeraldAccent,
+              fontWeight: FontWeight.w800,
+              margin: Margin.only(right: 10.px),
+            ),
+          ]),
+        ]),
       ]),
       css('.gallery-grid', [
         css('&').styles(
           display: Display.flex,
           flexWrap: FlexWrap.wrap,
+          justifyContent: JustifyContent.center,
+          gap: Gap.all(1.2.rem),
         ),
         css('.media-card').styles(
-          width: 300.px,
-          backgroundColor: surfaceColor,
-          border: Border.all(color: surfaceBorder, width: 1.px),
+          width: 320.px,
+          backgroundColor: cardBackground,
+          border: Border.all(color: cardBorder, width: 1.px),
           radius: BorderRadius.all(Radius.circular(16.px)),
           overflow: Overflow.hidden,
-          margin: Margin.all(10.px),
           shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 16.px, color: Color.rgba(0, 0, 0, 0.2)),
         ),
         css('.media-card img').styles(
           width: 100.percent,
-          height: 240.px,
+          height: 220.px,
           display: Display.block,
+          raw: {'object-fit': 'cover'},
         ),
       ]),
       css('.video-grid', [
         css('&').styles(
           display: Display.flex,
           flexDirection: FlexDirection.column,
+          gap: Gap.all(1.5.rem),
         ),
         css('.video-card').styles(
-          backgroundColor: surfaceColor,
-          border: Border.all(color: surfaceBorder, width: 1.px),
+          backgroundColor: cardBackground,
+          border: Border.all(color: cardBorder, width: 1.px),
           radius: BorderRadius.all(Radius.circular(16.px)),
           overflow: Overflow.hidden,
-          margin: Margin.only(bottom: 1.5.rem),
         ),
         css('.video-card video').styles(
           width: 100.percent,
           maxHeight: 500.px,
           display: Display.block,
         ),
+      ]),
+      css('.detail-bottom-cta', [
+        css('&').styles(
+          width: 100.percent,
+          backgroundColor: cardBackground,
+          border: Border.all(color: primaryColor, width: 1.px),
+          radius: BorderRadius.all(Radius.circular(20.px)),
+          padding: Padding.all(2.5.rem),
+          boxSizing: BoxSizing.borderBox,
+          textAlign: TextAlign.center,
+          margin: Margin.only(top: 1.rem, bottom: 3.rem),
+          raw: cardBackdropFilter,
+        ),
+        css('h3').styles(
+          fontSize: 1.6.rem,
+          fontWeight: FontWeight.w700,
+          color: textColor,
+          margin: Margin.only(bottom: 0.6.rem),
+        ),
+        css('p').styles(
+          fontSize: 1.05.rem,
+          color: textMutedColor,
+          margin: Margin.only(bottom: 1.8.rem),
+        ),
+        css('.bottom-actions', [
+          css('&').styles(
+            display: Display.flex,
+            justifyContent: JustifyContent.center,
+            flexWrap: FlexWrap.wrap,
+            gap: Gap.all(12.px),
+          ),
+          css('.btn').styles(
+            padding: Padding.symmetric(vertical: 12.px, horizontal: 24.px),
+            radius: BorderRadius.all(Radius.circular(12.px)),
+            fontWeight: FontWeight.w700,
+            fontSize: 0.95.rem,
+            textDecoration: TextDecoration(line: TextDecorationLine.none),
+            transition: Transition('all', duration: Duration(milliseconds: 200)),
+          ),
+          css('.btn-primary', [
+            css('&').styles(
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+            ),
+            css('&:hover').styles(
+              backgroundColor: secondaryColor,
+              color: textColor,
+            ),
+          ]),
+          css('.btn-secondary', [
+            css('&').styles(
+              backgroundColor: Color.rgba(255, 255, 255, 0.06),
+              color: textColor,
+              border: Border.all(color: surfaceBorder, width: 1.px),
+            ),
+            css('&:hover').styles(
+              raw: {'border-color': '#ffffff'},
+            ),
+          ]),
+        ]),
       ]),
     ]),
   ];
