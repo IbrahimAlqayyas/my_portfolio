@@ -247,6 +247,12 @@ class _AdminProjectsTabState extends State<AdminProjectsTab> {
                       [Component.text(project.isFeatured ? '⭐ Featured' : '☆ Feature')],
                     ),
                     div(classes: 'btn-group-right', [
+                      a(
+                        href: '/projects/${project.id}',
+                        target: Target.blank,
+                        classes: 'btn btn-outline-sm',
+                        [Component.text('View ↗')],
+                      ),
                       button(
                         classes: 'btn btn-outline-sm',
                         events: {'click': (e) => _openEditForm(project)},

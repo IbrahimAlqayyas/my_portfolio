@@ -15,7 +15,8 @@ class ProjectCard extends StatelessComponent {
 
     return Link(
       to: '/projects/${project.id}',
-      child: div(classes: 'project-card', [
+      classes: 'project-card',
+      child: Component.fragment([
         div(classes: 'card-image-wrapper', [
           img(src: project.coverImage, alt: project.title),
           div(classes: 'category-badge ${isSoftware ? "badge-software" : "badge-engineering"}', [
@@ -35,7 +36,10 @@ class ProjectCard extends StatelessComponent {
               span(classes: 'card-tag', [Component.text(tag)]),
           ]),
           div(classes: 'card-footer', [
-            span(classes: 'read-more', [Component.text('Explore Case Study →')]),
+            div(
+              classes: 'btn ${isSoftware ? "btn-primary" : "btn-engineering"}',
+              [Component.text('Explore Project & Walkthrough →')],
+            ),
           ]),
         ]),
       ]),
@@ -55,7 +59,10 @@ class ProjectCard extends StatelessComponent {
         flexDirection: FlexDirection.column,
         margin: Margin.all(12.px),
         shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 20.px, color: Color.rgba(0, 0, 0, 0.35)),
+        cursor: Cursor.pointer,
         raw: {
+          'text-decoration': 'none',
+          'color': 'inherit',
           'backdrop-filter': 'blur(16px)',
           '-webkit-backdrop-filter': 'blur(16px)',
           'transition': 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -167,16 +174,38 @@ class ProjectCard extends StatelessComponent {
             raw: {'border-top': '1px solid rgba(255, 255, 255, 0.08)'},
             padding: Padding.only(top: 1.rem),
           ),
-          css('.read-more').styles(
-            fontSize: 0.92.rem,
+          css('.btn').styles(
+            display: Display.block,
+            textAlign: TextAlign.center,
+            padding: Padding.symmetric(vertical: 0.75.rem, horizontal: 1.rem),
+            radius: BorderRadius.all(Radius.circular(10.px)),
             fontWeight: FontWeight.w700,
-            color: primaryColor,
-            transition: Transition('color', duration: Duration(milliseconds: 200)),
+            fontSize: 0.9.rem,
+            transition: Transition('all', duration: Duration(milliseconds: 200)),
+            raw: {
+              'width': '100%',
+              'box-sizing': 'border-box',
+            },
+          ),
+          css('.btn-primary').styles(
+            backgroundColor: primaryColor,
+            color: const Color('#0f172a'),
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(251, 197, 26, 0.25)),
+          ),
+          css('.btn-engineering').styles(
+            backgroundColor: secondaryColor,
+            color: const Color('#ffffff'),
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(255, 87, 123, 0.25)),
           ),
         ]),
       ]),
-      css('&:hover .card-footer .read-more').styles(
-        color: secondaryColor,
+      css('&:hover .card-footer .btn-primary').styles(
+        shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(251, 197, 26, 0.45)),
+        raw: {'transform': 'scale(1.02)'},
+      ),
+      css('&:hover .card-footer .btn-engineering').styles(
+        shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(255, 87, 123, 0.45)),
+        raw: {'transform': 'scale(1.02)'},
       ),
     ]),
   ];

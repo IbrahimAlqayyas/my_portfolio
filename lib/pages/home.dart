@@ -30,17 +30,17 @@ class _HomeState extends State<Home> {
   Component build(BuildContext context) {
     // Select top 4 featured projects (2 software, 2 engineering)
     final featuredProjects = [
-      softwareProjects.firstWhere((proj) => proj.id == 'ai-analytics-suite'),
-      softwareProjects.firstWhere((proj) => proj.id == 'fieldinspect-mobile-suite'),
-      engineeringProjects.firstWhere((proj) => proj.id == 'refinery-turnaround-inspection'),
-      engineeringProjects.firstWhere((proj) => proj.id == 'atex-hazardous-area-audit'),
+      projectsList.firstWhere((proj) => proj.id == 'ai-analytics-suite', orElse: () => projectsList.first),
+      projectsList.firstWhere((proj) => proj.id == 'fieldinspect-mobile-suite', orElse: () => projectsList.length > 1 ? projectsList[1] : projectsList.first),
+      projectsList.firstWhere((proj) => proj.id == 'refinery-turnaround-inspection', orElse: () => projectsList.length > 2 ? projectsList[2] : projectsList.first),
+      projectsList.firstWhere((proj) => proj.id == 'atex-hazardous-area-audit', orElse: () => projectsList.length > 3 ? projectsList[3] : projectsList.first),
     ];
 
     // Select top courses from both tracks
     final featuredCourses = [
-      coursesList.firstWhere((crs) => crs.id == 'flutter-clean-architecture-course'),
-      coursesList.firstWhere((crs) => crs.id == 'ei-inspection-qaqc-masterclass'),
-      coursesList.firstWhere((crs) => crs.id == 'ei-dossier-templates-pack'),
+      coursesList.firstWhere((crs) => crs.id == 'flutter-clean-architecture-course', orElse: () => coursesList.first),
+      coursesList.firstWhere((crs) => crs.id == 'ei-inspection-qaqc-masterclass', orElse: () => coursesList.length > 1 ? coursesList[1] : coursesList.first),
+      coursesList.firstWhere((crs) => crs.id == 'ei-itr-mdr-documentation-pack', orElse: () => coursesList.length > 2 ? coursesList[2] : coursesList.first),
     ];
 
     return section(classes: 'home-container', [

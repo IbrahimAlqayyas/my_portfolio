@@ -112,7 +112,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
         p([Component.text('Check out my comprehensive courses and free quality documentation packs.')]),
         div(classes: 'banner-actions', [
           Link(to: '/courses', classes: 'btn btn-primary', child: Component.text('Browse Courses & Resources →')),
-          Link(to: '/contact', classes: 'btn btn-secondary', child: Component.text('Discuss a Project →')),
+          Link(to: '/contact', classes: 'btn btn-secondary', child: Component.text('Contact Ibrahim for Custom Scopes →')),
         ]),
       ]),
     ]);

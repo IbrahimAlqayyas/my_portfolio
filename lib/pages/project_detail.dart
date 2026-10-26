@@ -29,7 +29,18 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
   @override
   Component build(BuildContext context) {
-    final project = contentRepository.getProjectById(component.projectId) ?? getProjectById(component.projectId);
+    String currentId = component.projectId;
+    if (currentId.isEmpty) {
+      try {
+        final loc = RouteState.of(context).location;
+        final segments = loc.split('?').first.split('/').where((seg) => seg.isNotEmpty).toList();
+        if (segments.length >= 2 && segments[0] == 'projects') {
+          currentId = segments[1];
+        }
+      } catch (_) {}
+    }
+
+    final project = contentRepository.getProjectById(currentId) ?? getProjectById(currentId);
 
     if (project == null) {
       return section(classes: 'project-detail-container', [
@@ -85,7 +96,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           Link(
             to: '/contact',
             classes: 'btn btn-secondary',
-            child: Component.text('Discuss Similar Project →'),
+            child: Component.text('Inquire About This Scope →'),
           ),
         ]),
       ]),
