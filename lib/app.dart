@@ -7,6 +7,7 @@ import 'components/footer.dart';
 import 'components/header.dart';
 import 'data/projects_data.dart';
 import 'pages/about.dart';
+import 'pages/admin_page.dart';
 import 'pages/contact.dart';
 import 'pages/courses.dart';
 import 'pages/engineering_hub.dart';
@@ -65,6 +66,11 @@ class AppState extends State<App> {
             ),
             Route(path: '/about', title: 'About - Ibrahim AlQyas', builder: (context, state) => const About()),
             Route(path: '/contact', title: 'Contact - Ibrahim AlQyas', builder: (context, state) => const Contact()),
+            Route(
+              path: '/admin',
+              title: 'CMS Dashboard - Ibrahim AlQyas',
+              builder: (context, state) => const AdminPage(),
+            ),
           ],
         ),
       ]),
@@ -102,5 +108,6 @@ class AppState extends State<App> {
     ...About.styles,
     ...Contact.styles,
     ...ProjectDetailPage.styles,
+    ...AdminPage.styles,
   ];
 }

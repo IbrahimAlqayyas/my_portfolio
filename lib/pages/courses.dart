@@ -4,8 +4,8 @@ import 'package:jaspr_router/jaspr_router.dart';
 
 import '../components/course_card.dart';
 import '../constants/theme.dart';
-import '../data/courses_data.dart';
 import '../models/course.dart';
+import '../services/content_repository.dart';
 import '../utils/scroll_helper.dart';
 
 class CoursesPage extends StatefulComponent {
@@ -19,26 +19,35 @@ class CoursesPage extends StatefulComponent {
 }
 
 class _CoursesPageState extends State<CoursesPage> {
-  String selectedFilter = 'all'; // 'all', 'software', 'engineering'
+  String selectedFilter = 'all';
 
   @override
   void initState() {
     super.initState();
     scrollToTop();
+    contentRepository.init();
+    contentRepository.addListener(_onContentChanged);
+  }
+
+  @override
+  void dispose() {
+    contentRepository.removeListener(_onContentChanged);
+    super.dispose();
+  }
+
+  void _onContentChanged() {
+    setState(() {});
   }
 
   List<Course> get filteredCourses {
-    if (selectedFilter == 'software') {
-      return softwareCourses;
-    } else if (selectedFilter == 'engineering') {
-      return engineeringCourses;
-    }
-    return coursesList;
+    return contentRepository.getCoursesByCategory(selectedFilter);
   }
 
   @override
   Component build(BuildContext context) {
     final list = filteredCourses;
+    final allCourses = contentRepository.courses;
+    final categories = contentRepository.courseCategories;
 
     return section(classes: 'courses-container', [
       div(classes: 'page-header', [
@@ -53,7 +62,7 @@ class _CoursesPageState extends State<CoursesPage> {
         ]),
       ]),
 
-      // Interactive Filter Tabs
+      // Interactive Filter Tabs (Dynamic Categories + Automatic All Resources tab)
       div(classes: 'filter-tabs', [
         button(
           classes: 'filter-btn ${selectedFilter == "all" ? "active" : ""}',
@@ -65,35 +74,25 @@ class _CoursesPageState extends State<CoursesPage> {
             },
           },
           [
-            Component.text('🌐 All Resources (${coursesList.length})'),
+            Component.text('🌐 All Resources (${allCourses.length})'),
           ],
         ),
-        button(
-          classes: 'filter-btn ${selectedFilter == "software" ? "active" : ""}',
-          events: {
-            'click': (e) {
-              setState(() {
-                selectedFilter = 'software';
-              });
+        for (var cat in categories)
+          button(
+            classes: 'filter-btn ${selectedFilter == cat.id ? "active" : ""}',
+            events: {
+              'click': (e) {
+                setState(() {
+                  selectedFilter = cat.id;
+                });
+              },
             },
-          },
-          [
-            Component.text('💻 Software & Flutter (${softwareCourses.length})'),
-          ],
-        ),
-        button(
-          classes: 'filter-btn ${selectedFilter == "engineering" ? "active" : ""}',
-          events: {
-            'click': (e) {
-              setState(() {
-                selectedFilter = 'engineering';
-              });
-            },
-          },
-          [
-            Component.text('⚡ E&I QA/QC (${engineeringCourses.length})'),
-          ],
-        ),
+            [
+              Component.text(
+                '${cat.icon} ${cat.label} (${allCourses.where((c) => c.category.toLowerCase() == cat.id.toLowerCase()).length})',
+              ),
+            ],
+          ),
       ]),
 
       // Courses Grid

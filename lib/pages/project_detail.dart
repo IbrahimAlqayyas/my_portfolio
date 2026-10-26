@@ -4,6 +4,7 @@ import 'package:jaspr_router/jaspr_router.dart';
 
 import '../constants/theme.dart';
 import '../data/projects_data.dart';
+import '../services/content_repository.dart';
 import '../utils/scroll_helper.dart';
 
 class ProjectDetailPage extends StatefulComponent {
@@ -22,11 +23,12 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
   void initState() {
     super.initState();
     scrollToTop();
+    contentRepository.init();
   }
 
   @override
   Component build(BuildContext context) {
-    final project = getProjectById(component.projectId);
+    final project = contentRepository.getProjectById(component.projectId) ?? getProjectById(component.projectId);
 
     if (project == null) {
       return section(classes: 'project-detail-container', [

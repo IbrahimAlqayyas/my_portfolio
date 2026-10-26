@@ -4,8 +4,8 @@ import 'package:jaspr_router/jaspr_router.dart';
 
 import '../components/project_card.dart';
 import '../constants/theme.dart';
-import '../data/projects_data.dart';
 import '../models/project.dart';
+import '../services/content_repository.dart';
 import '../utils/scroll_helper.dart';
 
 class PortfolioPage extends StatefulComponent {
@@ -19,26 +19,41 @@ class PortfolioPage extends StatefulComponent {
 }
 
 class _PortfolioPageState extends State<PortfolioPage> {
-  String selectedFilter = 'all'; // 'all', 'software', 'engineering'
+  String selectedFilter = 'all';
 
   @override
   void initState() {
     super.initState();
     scrollToTop();
+    contentRepository.init();
+    contentRepository.addListener(_onContentChanged);
+  }
+
+  @override
+  void dispose() {
+    contentRepository.removeListener(_onContentChanged);
+    super.dispose();
+  }
+
+  void _onContentChanged() {
+    setState(() {});
   }
 
   List<Project> get filteredProjects {
-    if (selectedFilter == 'software') {
-      return softwareProjects;
-    } else if (selectedFilter == 'engineering') {
-      return engineeringProjects;
-    }
-    return projectsList;
+    return contentRepository.getProjectsByCategory(selectedFilter);
+  }
+
+  String _formatCategoryLabel(String cat) {
+    if (cat.toLowerCase() == 'software') return '💻 Mobile & Web Apps';
+    if (cat.toLowerCase() == 'engineering') return '⚡ E&I Engineering';
+    return '🚀 ${cat[0].toUpperCase()}${cat.substring(1)}';
   }
 
   @override
   Component build(BuildContext context) {
     final list = filteredProjects;
+    final allProjects = contentRepository.projects;
+    final categories = contentRepository.projectCategories;
 
     return section(classes: 'portfolio-container', [
       div(classes: 'page-header', [
@@ -53,7 +68,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
         ]),
       ]),
 
-      // Interactive Filter Tabs
+      // Interactive Dynamic Filter Tabs
       div(classes: 'filter-tabs', [
         button(
           classes: 'filter-btn ${selectedFilter == "all" ? "active" : ""}',
@@ -65,35 +80,25 @@ class _PortfolioPageState extends State<PortfolioPage> {
             },
           },
           [
-            Component.text('🌐 All Projects (${projectsList.length})'),
+            Component.text('🌐 All Projects (${allProjects.length})'),
           ],
         ),
-        button(
-          classes: 'filter-btn ${selectedFilter == "software" ? "active" : ""}',
-          events: {
-            'click': (e) {
-              setState(() {
-                selectedFilter = 'software';
-              });
+        for (var cat in categories)
+          button(
+            classes: 'filter-btn ${selectedFilter == cat ? "active" : ""}',
+            events: {
+              'click': (e) {
+                setState(() {
+                  selectedFilter = cat;
+                });
+              },
             },
-          },
-          [
-            Component.text('💻 Mobile & Web Apps (${softwareProjects.length})'),
-          ],
-        ),
-        button(
-          classes: 'filter-btn ${selectedFilter == "engineering" ? "active" : ""}',
-          events: {
-            'click': (e) {
-              setState(() {
-                selectedFilter = 'engineering';
-              });
-            },
-          },
-          [
-            Component.text('⚡ E&I Engineering (${engineeringProjects.length})'),
-          ],
-        ),
+            [
+              Component.text(
+                '${_formatCategoryLabel(cat)} (${allProjects.where((item) => item.category.toLowerCase() == cat.toLowerCase()).length})',
+              ),
+            ],
+          ),
       ]),
 
       // Projects Grid

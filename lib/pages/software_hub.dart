@@ -5,8 +5,7 @@ import 'package:jaspr_router/jaspr_router.dart';
 import '../components/course_card.dart';
 import '../components/project_card.dart';
 import '../constants/theme.dart';
-import '../data/courses_data.dart';
-import '../data/projects_data.dart';
+import '../services/content_repository.dart';
 import '../utils/scroll_helper.dart';
 
 class SoftwareHub extends StatefulComponent {
@@ -24,27 +23,41 @@ class _SoftwareHubState extends State<SoftwareHub> {
   void initState() {
     super.initState();
     scrollToTop();
+    contentRepository.init();
+    contentRepository.addListener(_onContentChanged);
+  }
+
+  @override
+  void dispose() {
+    contentRepository.removeListener(_onContentChanged);
+    super.dispose();
+  }
+
+  void _onContentChanged() {
+    setState(() {});
   }
 
   @override
   Component build(BuildContext context) {
+    final content = contentRepository.softwareHub;
+    final projects = contentRepository.softwareProjects;
+    final courses = contentRepository.softwareCourses;
+
     return section(classes: 'hub-container', [
       // Hero Section
       div(classes: 'hub-hero', [
         div(classes: 'hub-badge', [
-          Component.text('📱 Software Engineering & Mobile Track'),
+          Component.text(content.badge),
         ]),
-        h1([Component.text('Flutter & Web Software Engineering')]),
+        h1([Component.text(content.title)]),
         p(classes: 'hub-subtitle', [
-          Component.text('Crafting High-Performance Cross-Platform Apps with Flutter & Dart'),
+          Component.text(content.subtitle),
         ]),
         p(classes: 'hub-bio', [
-          Component.text(
-            'With +6 years of software experience, I build robust, beautiful mobile and web applications. From clean architecture and reactive state management to seamless offline synchronization and snappy web rendering, I deliver production software that scales.',
-          ),
+          Component.text(content.bio),
         ]),
         div(classes: 'hub-actions', [
-          Link(to: '/contact', classes: 'btn btn-primary', child: Component.text('Hire for Mobile & Web Apps →')),
+          Link(to: content.primaryBtnLink, classes: 'btn btn-primary', child: Component.text(content.primaryBtnText)),
           a(
             href: '#software-projects',
             classes: 'btn btn-secondary',
@@ -54,127 +67,82 @@ class _SoftwareHubState extends State<SoftwareHub> {
                 scrollToId('software-projects');
               },
             },
-            [Component.text('View Apps & Code ↓')],
+            [Component.text(content.secondaryBtnText)],
           ),
         ]),
       ]),
 
       // Metrics Bar
       div(classes: 'metrics-bar', [
-        div(classes: 'metric-item', [
-          h3([Component.text('6+ Years')]),
-          p([Component.text('Software Engineering')]),
-        ]),
-        div(classes: 'metric-item', [
-          h3([Component.text('100%')]),
-          p([Component.text('Dart & Flutter Specialization')]),
-        ]),
-        div(classes: 'metric-item', [
-          h3([Component.text('iOS & Android')]),
-          p([Component.text('Cross-Platform Deployments')]),
-        ]),
-        div(classes: 'metric-item', [
-          h3([Component.text('Clean Arch')]),
-          p([Component.text('Scalable Enterprise Patterns')]),
-        ]),
+        for (var metric in content.metrics)
+          div(classes: 'metric-item', [
+            h3([Component.text(metric.value)]),
+            p([Component.text(metric.label)]),
+          ]),
       ]),
 
       // Services Section
       div(classes: 'hub-section', [
         div(classes: 'section-header', [
-          h2([Component.text('Software Development Services')]),
-          p([Component.text('End-to-end technical solutions tailored for startups, businesses, and enterprise teams.')]),
+          h2([Component.text(content.servicesTitle)]),
+          p([Component.text(content.servicesSubtitle)]),
         ]),
         div(classes: 'services-grid', [
-          _ServiceCard(
-            icon: '📱',
-            title: 'Custom Mobile Applications',
-            description:
-                'Native-speed iOS and Android applications developed from Figma/wireframes into maintainable Flutter codebases.',
-            features: const ['iOS & Android Stores', 'Offline-First Storage', 'Push Notifications & APIs'],
-          ),
-          _ServiceCard(
-            icon: '⚡',
-            title: 'Full-Stack Web & Jaspr Apps',
-            description:
-                'Lightning-fast web apps using Jaspr and modern Dart. Clean SSR, SEO optimization, and reactive front-ends.',
-            features: const ['Server-Side Rendering', 'Zero Bloat Architecture', 'High Lighthouse Scores'],
-          ),
-          _ServiceCard(
-            icon: '🚀',
-            title: 'Startup MVP Acceleration',
-            description:
-                'Rapid prototyping and MVP development for founders who need to validate their product with real users quickly.',
-            features: const ['Fast Time-to-Market', 'Payment Gateways', 'Scalable Architecture Base'],
-          ),
-          _ServiceCard(
-            icon: '🛠️',
-            title: 'Code Audit & Refactoring',
-            description:
-                'Transform legacy or sluggish codebases with Clean Architecture, Riverpod/Bloc state management, and strict testing.',
-            features: const ['Performance Optimization', 'Bug Hunting & Overflow Fixes', 'Unit & Widget Testing'],
-          ),
+          for (var s in content.services)
+            _ServiceCard(
+              icon: s.icon,
+              title: s.title,
+              description: s.description,
+              features: s.features,
+            ),
         ]),
       ]),
 
-      // Section-Specific Portfolio (Sourced from shared projectsList)
+      // Section-Specific Portfolio (Sourced from shared projects)
       div(id: 'software-projects', classes: 'hub-section', [
         div(classes: 'section-header-split', [
           div([
-            h2([Component.text('Featured Software Projects')]),
-            p([Component.text('Production mobile applications, web platforms, and industrial mobile solutions.')]),
+            h2([Component.text(content.featuredProjectsTitle)]),
+            p([Component.text(content.featuredProjectsSubtitle)]),
           ]),
           Link(to: '/projects', classes: 'view-all-link', child: Component.text('View All in Shared Portfolio →')),
         ]),
         div(classes: 'projects-grid', [
-          for (var project in softwareProjects) ProjectCard(project: project),
+          for (var project in projects) ProjectCard(project: project),
         ]),
       ]),
 
-      // Section-Specific Courses & Resources (Sourced from shared coursesList)
+      // Section-Specific Courses & Resources (Sourced from shared courses)
       div(classes: 'hub-section', [
         div(classes: 'section-header-split', [
           div([
-            h2([Component.text('Software Courses & Developer Resources')]),
-            p([Component.text('Free starter kits, architecture masterclasses, and in-depth Dart tutorials.')]),
+            h2([Component.text(content.featuredCoursesTitle)]),
+            p([Component.text(content.featuredCoursesSubtitle)]),
           ]),
           Link(to: '/courses', classes: 'view-all-link', child: Component.text('View All in Academy →')),
         ]),
         div(classes: 'courses-grid', [
-          for (var course in softwareCourses) CourseCard(course: course),
+          for (var course in courses) CourseCard(course: course),
         ]),
       ]),
 
       // Tech Stack
       div(classes: 'hub-section tech-stack-section', [
         div(classes: 'section-header', [
-          h2([Component.text('Core Technologies & Tooling')]),
-          p([Component.text('My primary software development toolbox.')]),
+          h2([Component.text(content.toolingTitle)]),
+          p([Component.text(content.toolingSubtitle)]),
         ]),
         div(classes: 'tech-badges', [
-          for (var tech in [
-            'Flutter',
-            'Dart',
-            'Jaspr',
-            'Riverpod',
-            'Bloc',
-            'Firebase',
-            'REST APIs',
-            'GraphQL',
-            'SQLite & Hive',
-            'Git & GitHub Actions',
-            'Figma to Code',
-            'Clean Architecture',
-          ])
+          for (var tech in content.toolingList)
             span(classes: 'tech-badge', [Component.text(tech)]),
         ]),
       ]),
 
       // Bottom CTA
       div(classes: 'hub-cta-box', [
-        h2([Component.text('Ready to build your next mobile or web application?')]),
-        p([Component.text('Let’s turn your product vision into a clean, high-performance Flutter reality.')]),
-        Link(to: '/contact', classes: 'btn btn-primary', child: Component.text('Start a Software Project →')),
+        h2([Component.text(content.ctaTitle)]),
+        p([Component.text(content.ctaDescription)]),
+        Link(to: content.ctaBtnLink, classes: 'btn btn-primary', child: Component.text(content.ctaBtnText)),
       ]),
     ]);
   }

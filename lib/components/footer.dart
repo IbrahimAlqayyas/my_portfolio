@@ -68,6 +68,7 @@ class Footer extends StatelessComponent {
               li([Link(to: '/courses', child: Component.text('Courses & Resources'))]),
               li([Link(to: '/about', child: Component.text('About Ibrahim'))]),
               li([Link(to: '/contact', child: Component.text('Contact & Booking'))]),
+              li([Link(to: '/admin', child: Component.text('⚙️ CMS Dashboard'))]),
             ]),
           ]),
         ]),

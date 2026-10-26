@@ -5,8 +5,7 @@ import 'package:jaspr_router/jaspr_router.dart';
 import '../components/course_card.dart';
 import '../components/project_card.dart';
 import '../constants/theme.dart';
-import '../data/courses_data.dart';
-import '../data/projects_data.dart';
+import '../services/content_repository.dart';
 import '../utils/scroll_helper.dart';
 
 class EngineeringHub extends StatefulComponent {
@@ -24,27 +23,41 @@ class _EngineeringHubState extends State<EngineeringHub> {
   void initState() {
     super.initState();
     scrollToTop();
+    contentRepository.init();
+    contentRepository.addListener(_onContentChanged);
+  }
+
+  @override
+  void dispose() {
+    contentRepository.removeListener(_onContentChanged);
+    super.dispose();
+  }
+
+  void _onContentChanged() {
+    setState(() {});
   }
 
   @override
   Component build(BuildContext context) {
+    final content = contentRepository.engineeringHub;
+    final projects = contentRepository.engineeringProjects;
+    final courses = contentRepository.engineeringCourses;
+
     return section(classes: 'hub-container', [
       // Hero Section
       div(classes: 'hub-hero', [
         div(classes: 'hub-badge', [
-          Component.text('⚡ Electrical & Instrumentation (E&I) Track'),
+          Component.text(content.badge),
         ]),
-        h1([Component.text('E&I Construction, Inspection & QA/QC')]),
+        h1([Component.text(content.title)]),
         p(classes: 'hub-subtitle', [
-          Component.text('Precision Quality Assurance & Regulatory Compliance for Industrial EPC Projects'),
+          Component.text(content.subtitle),
         ]),
         p(classes: 'hub-bio', [
-          Component.text(
-            'Specialized in oil & gas, refinery, and power generation E&I QA/QC. Delivering rigorous inspection protocols, ATEX/IECEx hazardous area compliance, smart transmitter calibrations, and seamless Manufacturer Data Report (MDR) turnover dossiers.',
-          ),
+          Component.text(content.bio),
         ]),
         div(classes: 'hub-actions', [
-          Link(to: '/contact', classes: 'btn btn-primary', child: Component.text('Request Engineering Consultation →')),
+          Link(to: content.primaryBtnLink, classes: 'btn btn-primary', child: Component.text(content.primaryBtnText)),
           a(
             href: '#engineering-projects',
             classes: 'btn btn-secondary',
@@ -54,127 +67,84 @@ class _EngineeringHubState extends State<EngineeringHub> {
                 scrollToId('engineering-projects');
               },
             },
-            [Component.text('View Case Studies ↓')],
+            [Component.text(content.secondaryBtnText)],
           ),
         ]),
       ]),
 
       // Metrics Bar
       div(classes: 'metrics-bar', [
-        div(classes: 'metric-item', [
-          h3([Component.text('IEC & ATEX')]),
-          p([Component.text('Compliance Standards')]),
-        ]),
-        div(classes: 'metric-item', [
-          h3([Component.text('100%')]),
-          p([Component.text('ITR & MDR Verification')]),
-        ]),
-        div(classes: 'metric-item', [
-          h3([Component.text('Oil & Gas')]),
-          p([Component.text('Refinery & Plant Experience')]),
-        ]),
-        div(classes: 'metric-item', [
-          h3([Component.text('Zero NCR')]),
-          p([Component.text('Handover Excellence')]),
-        ]),
+        for (var metric in content.metrics)
+          div(classes: 'metric-item', [
+            h3([Component.text(metric.value)]),
+            p([Component.text(metric.label)]),
+          ]),
       ]),
 
       // Services Section
       div(classes: 'hub-section', [
         div(classes: 'section-header', [
-          h2([Component.text('E&I Engineering & Consulting Services')]),
-          p([Component.text('Comprehensive technical consulting and field verification for EPC contractors and plant operators.')]),
+          h2([Component.text(content.servicesTitle)]),
+          p([Component.text(content.servicesSubtitle)]),
         ]),
         div(classes: 'services-grid', [
-          _ServiceCard(
-            icon: '📋',
-            title: 'ITR & MDR Dossier Audits',
-            description:
-                'End-to-end review of Inspection & Test Records (ITRs), calibration certs, and compilation of client handover dossiers (MDRs).',
-            features: const ['100% Document Verification', 'Pre-Commissioning Punch Lists', 'Client Acceptance Facilitation'],
-          ),
-          _ServiceCard(
-            icon: '⚠️',
-            title: 'Hazardous Area (ATEX) Audits',
-            description:
-                'Ex-d, Ex-e, Ex-i inspection of enclosures, barrier glands, and intrinsically safe loop calculations per IEC 60079 series.',
-            features: const ['Ex Equipment Register', 'IEC 60079-14 & 17 Compliance', 'Defect Remediation Guidance'],
-          ),
-          _ServiceCard(
-            icon: '🔬',
-            title: 'Calibration Systems & Registers',
-            description:
-                'Quality registers for HART and Fieldbus smart transmitters, control valves stroke tests, and primary electrical testing.',
-            features: const ['5-Point Calibration Logs', 'Uncertainty Verification', 'Test Equipment Certification Tracking'],
-          ),
-          _ServiceCard(
-            icon: '🎓',
-            title: 'Technical Training & Field QA/QC',
-            description:
-                'Hands-on training courses and field mentorship for junior engineers and QA/QC inspectors in modern installation standards.',
-            features: const ['Cable Glanding & Pulling Rules', 'Loop Checking Methodology', 'MDR Dossier Best Practices'],
-          ),
+          for (var s in content.services)
+            _ServiceCard(
+              icon: s.icon,
+              title: s.title,
+              description: s.description,
+              features: s.features,
+            ),
         ]),
       ]),
 
-      // Section-Specific Portfolio (Sourced from shared projectsList)
+      // Section-Specific Portfolio (Sourced from shared projects)
       div(id: 'engineering-projects', classes: 'hub-section', [
         div(classes: 'section-header-split', [
           div([
-            h2([Component.text('E&I Engineering Case Studies')]),
-            p([Component.text('Documented inspection projects, hazardous area audits, and commissioning quality packages.')]),
+            h2([Component.text(content.featuredProjectsTitle)]),
+            p([Component.text(content.featuredProjectsSubtitle)]),
           ]),
           Link(to: '/projects', classes: 'view-all-link', child: Component.text('View All in Shared Portfolio →')),
         ]),
         div(classes: 'projects-grid', [
-          for (var project in engineeringProjects) ProjectCard(project: project),
+          for (var project in projects) ProjectCard(project: project),
         ]),
       ]),
 
-      // Section-Specific Courses & Resources (Sourced from shared coursesList)
+      // Section-Specific Courses & Resources (Sourced from shared courses)
       div(classes: 'hub-section', [
         div(classes: 'section-header-split', [
           div([
-            h2([Component.text('E&I Training & Quality Documentation Packs')]),
-            p([Component.text('Field masterclasses, printable inspection sheets, and standardized Excel/PDF quality registers.')]),
+            h2([Component.text(content.featuredCoursesTitle)]),
+            p([Component.text(content.featuredCoursesSubtitle)]),
           ]),
           Link(to: '/courses', classes: 'view-all-link', child: Component.text('View All in Academy →')),
         ]),
         div(classes: 'courses-grid', [
-          for (var course in engineeringCourses) CourseCard(course: course),
+          for (var course in courses) CourseCard(course: course),
         ]),
       ]),
 
       // Standards & Accreditations
       div(classes: 'hub-section standards-section', [
         div(classes: 'section-header', [
-          h2([Component.text('Standards, Codes & Compliance Frameworks')]),
-          p([Component.text('All engineering and inspection services strictly adhere to international codes.')]),
+          h2([Component.text(content.toolingTitle)]),
+          p([Component.text(content.toolingSubtitle)]),
         ]),
         div(classes: 'standards-badges', [
-          for (var std in [
-            'IEC 60079 (Hazardous Areas)',
-            'ATEX Directive 2014/34/EU',
-            'IECEx Certified Systems',
-            'ISO 9001 Quality Management',
-            'API 500 / API 505 Area Classification',
-            'IEC 60364 Electrical Installations',
-            'NFPA 70 (NEC Standards)',
-            'ISA-5.1 Instrumentation Symbols',
-          ])
+          for (var std in content.toolingList)
             span(classes: 'standard-badge', [Component.text(std)]),
         ]),
       ]),
 
       // Bottom CTA
       div(classes: 'hub-cta-box', [
-        h2([Component.text('Need E&I Consulting or QA/QC Audit for your Facility?')]),
+        h2([Component.text(content.ctaTitle)]),
         p([
-          Component.text(
-            'Whether preparing for an upcoming turnaround, resolving MDR punch lists, or certifying hazardous areas, let’s discuss your scope.',
-          ),
+          Component.text(content.ctaDescription),
         ]),
-        Link(to: '/contact', classes: 'btn btn-primary', child: Component.text('Schedule an Engineering Consultation →')),
+        Link(to: content.ctaBtnLink, classes: 'btn btn-primary', child: Component.text(content.ctaBtnText)),
       ]),
     ]);
   }

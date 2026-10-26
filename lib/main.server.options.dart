@@ -11,6 +11,7 @@ import 'package:my_portfolio/components/footer.dart' as _footer;
 import 'package:my_portfolio/components/header.dart' as _header;
 import 'package:my_portfolio/components/project_card.dart' as _project_card;
 import 'package:my_portfolio/pages/about.dart' as _about;
+import 'package:my_portfolio/pages/admin_page.dart' as _admin_page;
 import 'package:my_portfolio/pages/contact.dart' as _contact;
 import 'package:my_portfolio/pages/courses.dart' as _courses;
 import 'package:my_portfolio/pages/engineering_hub.dart' as _engineering_hub;
@@ -46,6 +47,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._header.Header.styles,
     ..._project_card.ProjectCard.styles,
     ..._about.About.styles,
+    ..._admin_page.AdminPage.styles,
     ..._contact.Contact.styles,
     ..._courses.CoursesPage.styles,
     ..._engineering_hub.EngineeringHub.styles,

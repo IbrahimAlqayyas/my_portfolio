@@ -1,0 +1,21 @@
+import 'dart:html' as html;
+
+String? getLocalStorageItem(String key) {
+  try {
+    return html.window.localStorage[key];
+  } catch (_) {
+    return null;
+  }
+}
+
+void setLocalStorageItem(String key, String value) {
+  try {
+    html.window.localStorage[key] = value;
+  } catch (_) {}
+}
+
+void removeLocalStorageItem(String key) {
+  try {
+    html.window.localStorage.remove(key);
+  } catch (_) {}
+}
