@@ -5,10 +5,12 @@ import 'package:jaspr_router/jaspr_router.dart';
 import 'components/cosmic_canvas.dart';
 import 'components/footer.dart';
 import 'components/header.dart';
+import 'data/courses_data.dart';
 import 'data/projects_data.dart';
 import 'pages/about.dart';
 import 'pages/admin_page.dart';
 import 'pages/contact.dart';
+import 'pages/course_detail.dart';
 import 'pages/courses.dart';
 import 'pages/engineering_hub.dart';
 import 'pages/home.dart';
@@ -60,9 +62,25 @@ class AppState extends State<App> {
                 builder: (context, state) => ProjectDetailPage(projectId: project.id),
               ),
             Route(
+              path: '/projects/:id',
+              title: 'Project Details - Ibrahim AlQyas',
+              builder: (context, state) => ProjectDetailPage(projectId: state.params['id'] ?? ''),
+            ),
+            Route(
               path: '/courses',
               title: 'Courses & Resources - Ibrahim AlQyas',
               builder: (context, state) => const CoursesPage(),
+            ),
+            for (var course in coursesList)
+              Route(
+                path: '/courses/${course.id}',
+                title: '${course.title} - Ibrahim AlQyas',
+                builder: (context, state) => CourseDetailPage(courseId: course.id),
+              ),
+            Route(
+              path: '/courses/:id',
+              title: 'Course Curriculum - Ibrahim AlQyas',
+              builder: (context, state) => CourseDetailPage(courseId: state.params['id'] ?? ''),
             ),
             Route(path: '/about', title: 'About - Ibrahim AlQyas', builder: (context, state) => const About()),
             Route(path: '/contact', title: 'Contact - Ibrahim AlQyas', builder: (context, state) => const Contact()),

@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../../components/video_embed_player.dart';
 import '../../models/project.dart';
 import '../../services/content_repository.dart';
 
@@ -34,6 +35,7 @@ class _AdminProjectsTabState extends State<AdminProjectsTab> {
   String _fImages = '';
   String _fDemoUrl = '';
   String _fGithubUrl = '';
+  String _fIntroVideoUrl = '';
   bool _fIsFeatured = false;
 
   String _val(dynamic e) => (e.target as dynamic)?.value?.toString() ?? '';
@@ -57,6 +59,7 @@ class _AdminProjectsTabState extends State<AdminProjectsTab> {
       _fImages = '';
       _fDemoUrl = '';
       _fGithubUrl = '';
+      _fIntroVideoUrl = '';
       _fIsFeatured = false;
     });
   }
@@ -79,6 +82,7 @@ class _AdminProjectsTabState extends State<AdminProjectsTab> {
       _fImages = project.images.join(', ');
       _fDemoUrl = project.demoUrl ?? '';
       _fGithubUrl = project.githubUrl ?? '';
+      _fIntroVideoUrl = project.primaryVideoUrl ?? '';
       _fIsFeatured = project.isFeatured;
     });
   }
@@ -109,6 +113,7 @@ class _AdminProjectsTabState extends State<AdminProjectsTab> {
       images: imgList,
       demoUrl: _fDemoUrl.trim().isEmpty ? null : _fDemoUrl.trim(),
       githubUrl: _fGithubUrl.trim().isEmpty ? null : _fGithubUrl.trim(),
+      introVideoUrl: _fIntroVideoUrl.trim().isEmpty ? null : _fIntroVideoUrl.trim(),
       isFeatured: _fIsFeatured,
     );
 
@@ -414,6 +419,34 @@ class _AdminProjectsTabState extends State<AdminProjectsTab> {
             events: {'input': (e) => _fDeliverables = _val(e)},
             [Component.text(_fDeliverables)],
           ),
+        ]),
+
+        div(classes: 'form-group', [
+          label([Component.text('Intro / Walkthrough Video URL (YouTube, Google Drive, or MP4)')]),
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: _fIntroVideoUrl,
+            attributes: {'placeholder': 'e.g. https://www.youtube.com/watch?v=... or https://drive.google.com/file/d/.../view'},
+            events: {
+              'input': (e) {
+                setState(() {
+                  _fIntroVideoUrl = _val(e);
+                });
+              },
+            },
+          ),
+          span(classes: 'hint-text', [
+            Component.text('Paste a YouTube, Google Drive, or direct MP4 link. The embedded player will automatically detect the source and stream it with quality controls.'),
+          ]),
+          if (_fIntroVideoUrl.trim().isNotEmpty)
+            div(classes: 'video-preview-box', [
+              label([Component.text('Live Player Preview:')]),
+              VideoEmbedPlayer(
+                videoUrl: _fIntroVideoUrl.trim(),
+                title: 'Project Video Preview',
+              ),
+            ]),
         ]),
 
         div(classes: 'form-grid-2', [

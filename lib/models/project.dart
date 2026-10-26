@@ -16,6 +16,7 @@ class Project {
   final String? clientOrScope;
   final List<String> deliverables;
   final bool isFeatured;
+  final String? introVideoUrl;
 
   const Project({
     required this.id,
@@ -35,7 +36,13 @@ class Project {
     this.clientOrScope,
     this.deliverables = const [],
     this.isFeatured = false,
+    this.introVideoUrl,
   });
+
+  String? get primaryVideoUrl =>
+      (introVideoUrl != null && introVideoUrl!.trim().isNotEmpty)
+          ? introVideoUrl
+          : (videos.isNotEmpty ? videos.first : null);
 
   Project copyWith({
     String? id,
@@ -55,6 +62,7 @@ class Project {
     String? clientOrScope,
     List<String>? deliverables,
     bool? isFeatured,
+    String? introVideoUrl,
   }) {
     return Project(
       id: id ?? this.id,
@@ -74,6 +82,7 @@ class Project {
       clientOrScope: clientOrScope ?? this.clientOrScope,
       deliverables: deliverables ?? this.deliverables,
       isFeatured: isFeatured ?? this.isFeatured,
+      introVideoUrl: introVideoUrl ?? this.introVideoUrl,
     );
   }
 
@@ -96,6 +105,7 @@ class Project {
       'clientOrScope': clientOrScope,
       'deliverables': deliverables,
       'isFeatured': isFeatured,
+      'introVideoUrl': introVideoUrl,
     };
   }
 
@@ -118,6 +128,7 @@ class Project {
       clientOrScope: json['clientOrScope'] as String?,
       deliverables: (json['deliverables'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       isFeatured: json['isFeatured'] as bool? ?? false,
+      introVideoUrl: json['introVideoUrl'] as String?,
     );
   }
 }

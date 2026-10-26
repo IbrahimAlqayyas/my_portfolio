@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
+import '../components/video_embed_player.dart';
 import '../constants/theme.dart';
 import '../data/projects_data.dart';
 import '../services/content_repository.dart';
@@ -120,20 +121,24 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           ]),
         ]),
 
-      // 2. Video Demos Section
-      if (project.videos.isNotEmpty)
+      // 2. Video Demos Section (Embedded Player for YouTube, Google Drive, or MP4)
+      if (project.primaryVideoUrl != null && project.primaryVideoUrl!.trim().isNotEmpty)
         div(classes: 'detail-section', [
-          h2([Component.text('🎥 Video Demos & Screen Recordings')]),
-          div(classes: 'video-grid', [
-            for (var videoUrl in project.videos)
-              div(classes: 'video-card', [
-                video(
-                  controls: true,
-                  src: videoUrl,
-                  [],
-                ),
-              ]),
+          h2([Component.text('🎥 Video Walkthrough & Screen Recording')]),
+          p(classes: 'section-sub-text', [
+            Component.text('Watch the live interactive walkthrough. Direct embedded playback supports quality settings on YouTube and Google Drive.'),
           ]),
+          VideoEmbedPlayer(
+            videoUrl: project.primaryVideoUrl!,
+            title: '${project.title} • Video Walkthrough',
+            subtitle: 'Live Embedded Stream',
+          ),
+          if (project.videos.length > 1)
+            for (var videoUrl in project.videos.where((v) => v != project.primaryVideoUrl))
+              VideoEmbedPlayer(
+                videoUrl: videoUrl,
+                title: 'Additional Feature Video',
+              ),
         ]),
 
       // 3. Animated GIFs Section
@@ -321,6 +326,12 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           fontWeight: FontWeight.w700,
           color: textColor,
           margin: Margin.only(bottom: 1.2.rem),
+        ),
+        css('.section-sub-text').styles(
+          color: textMutedColor,
+          fontSize: 0.95.rem,
+          margin: Margin.only(bottom: 1.2.rem),
+          lineHeight: 1.5.em,
         ),
         css('.full-description').styles(
           fontSize: 1.1.rem,

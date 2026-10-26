@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../../components/video_embed_player.dart';
 import '../../models/course.dart';
 import '../../models/course_category.dart';
 import '../../services/content_repository.dart';
@@ -43,6 +44,9 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
   String _fTopics = '';
   String _fFeatures = '';
   bool _fIsFeatured = false;
+  String _fIntroVideoUrl = '';
+  List<CourseChapter> _fChapters = [];
+  String? _previewingLessonId;
 
   String _val(dynamic e) => (e.target as dynamic)?.value?.toString() ?? '';
   bool _chk(dynamic e) => (e.target as dynamic)?.checked == true;
@@ -67,6 +71,9 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
       _fTopics = '';
       _fFeatures = '';
       _fIsFeatured = false;
+      _fIntroVideoUrl = '';
+      _fChapters = [];
+      _previewingLessonId = null;
     });
   }
 
@@ -90,7 +97,88 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
       _fTopics = course.topics.join('\n');
       _fFeatures = course.features.join('\n');
       _fIsFeatured = course.isFeatured;
+      _fIntroVideoUrl = course.introVideoUrl ?? '';
+      _fChapters = course.chapters.map((ch) {
+        return ch.copyWith(
+          lessons: ch.lessons.map((l) => l.copyWith()).toList(),
+        );
+      }).toList();
+      _previewingLessonId = null;
     });
+  }
+
+  void _addChapter() {
+    setState(() {
+      final chNum = _fChapters.length + 1;
+      _fChapters.add(CourseChapter(
+        id: 'chapter-$chNum-${DateTime.now().millisecondsSinceEpoch}',
+        title: 'Chapter $chNum: Title',
+        description: 'Chapter overview and objectives',
+        lessons: [
+          CourseLesson(
+            id: 'lesson-${DateTime.now().millisecondsSinceEpoch}',
+            title: '1.1 Introduction',
+            duration: '10 min',
+            videoUrl: '',
+            isFreePreview: true,
+          ),
+        ],
+      ));
+    });
+  }
+
+  void _removeChapter(int chIdx) {
+    setState(() {
+      _fChapters.removeAt(chIdx);
+    });
+  }
+
+  void _updateChapterTitle(int chIdx, String title) {
+    final ch = _fChapters[chIdx];
+    _fChapters[chIdx] = ch.copyWith(title: title);
+  }
+
+  void _updateChapterDesc(int chIdx, String desc) {
+    final ch = _fChapters[chIdx];
+    _fChapters[chIdx] = ch.copyWith(description: desc);
+  }
+
+  void _addLesson(int chIdx) {
+    setState(() {
+      final ch = _fChapters[chIdx];
+      final lNum = ch.lessons.length + 1;
+      final newLessons = List<CourseLesson>.from(ch.lessons)..add(CourseLesson(
+        id: 'lesson-${DateTime.now().millisecondsSinceEpoch}',
+        title: 'Lesson $lNum: Topic Name',
+        duration: '15 min',
+        videoUrl: '',
+        isFreePreview: false,
+      ));
+      _fChapters[chIdx] = ch.copyWith(lessons: newLessons);
+    });
+  }
+
+  void _removeLesson(int chIdx, int lIdx) {
+    setState(() {
+      final ch = _fChapters[chIdx];
+      final newLessons = List<CourseLesson>.from(ch.lessons)..removeAt(lIdx);
+      _fChapters[chIdx] = ch.copyWith(lessons: newLessons);
+    });
+  }
+
+  void _updateLesson(int chIdx, int lIdx, {String? title, String? duration, String? videoUrl, bool? isFreePreview, String? notes}) {
+    final ch = _fChapters[chIdx];
+    final lesson = ch.lessons[lIdx];
+    final updated = lesson.copyWith(
+      title: title ?? lesson.title,
+      duration: duration ?? lesson.duration,
+      videoUrl: videoUrl ?? lesson.videoUrl,
+      isFreePreview: isFreePreview ?? lesson.isFreePreview,
+      notes: notes ?? lesson.notes,
+    );
+    final newLessons = List<CourseLesson>.from(ch.lessons);
+    newLessons[lIdx] = updated;
+    _fChapters[chIdx] = ch.copyWith(lessons: newLessons);
   }
 
   void _saveCourse() {
@@ -120,6 +208,8 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
       topics: topicsList,
       features: featuresList,
       isFeatured: _fIsFeatured,
+      introVideoUrl: _fIntroVideoUrl.trim().isEmpty ? null : _fIntroVideoUrl.trim(),
+      chapters: _fChapters,
     );
 
     if (_currentCourse == null) {
@@ -651,6 +741,38 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
           ]),
         ]),
 
+        // Course Intro Video
+        div(classes: 'form-group', [
+          label([Component.text('Intro / Teaser Video URL (YouTube, Google Drive, or MP4)')]),
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: _fIntroVideoUrl,
+            attributes: {'placeholder': 'e.g. https://www.youtube.com/watch?v=... or https://drive.google.com/file/d/.../view'},
+            events: {
+              'input': (e) {
+                setState(() {
+                  _fIntroVideoUrl = _val(e);
+                });
+              },
+            },
+          ),
+          span(classes: 'field-help-text', [
+            Component.text('✨ Automatically detects YouTube videos (embed mode) or Google Drive files (preview streaming mode with quality control).'),
+          ]),
+          if (_fIntroVideoUrl.trim().isNotEmpty)
+            div(classes: 'video-preview-box', [
+              label([Component.text('Live Player Preview:')]),
+              VideoEmbedPlayer(
+                videoUrl: _fIntroVideoUrl.trim(),
+                title: 'Intro Preview: $_fTitle',
+              ),
+            ]),
+        ]),
+
+        // Course Chapters & Lectures Curriculum CRUD Manager
+        _buildCurriculumManager(),
+
         div(classes: 'form-actions-bottom', [
           button(
             classes: 'btn btn-primary',
@@ -664,6 +786,198 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
           ),
         ]),
       ]),
+    ]);
+  }
+
+  // --- CHAPTERS & LECTURES CURRICULUM MANAGER ---
+  Component _buildCurriculumManager() {
+    final totalLessons = _fChapters.fold<int>(0, (sum, ch) => sum + ch.lessons.length);
+
+    return div(attributes: {
+      'style': 'margin-top: 28px; padding: 20px; background: #090d16; border: 1px solid #22314e; border-radius: 14px;',
+    }, [
+      div(classes: 'admin-section-header-split', [
+        div([
+          h4(attributes: {'style': 'margin: 0; color: #f8fafc; font-size: 18px; font-weight: 700;'}, [
+            Component.text('📚 Course Curriculum: Chapters & Video Lectures'),
+          ]),
+          p(attributes: {'style': 'margin-top: 4px; color: #94a3b8; font-size: 13px;'}, [
+            Component.text('${_fChapters.length} Chapters • $totalLessons Lectures • Add YouTube or Google Drive links with embedded streaming'),
+          ]),
+        ]),
+        button(
+          classes: 'btn btn-primary',
+          events: {'click': (e) => _addChapter()},
+          [Component.text('+ Add Chapter')],
+        ),
+      ]),
+
+      if (_fChapters.isEmpty)
+        div(attributes: {'style': 'padding: 32px; text-align: center; color: #64748b; font-size: 14px;'}, [
+          Component.text('No chapters yet. Click "+ Add Chapter" to start structuring the curriculum!'),
+        ])
+      else
+        for (int chIdx = 0; chIdx < _fChapters.length; chIdx++)
+          _buildChapterEditor(chIdx),
+    ]);
+  }
+
+  Component _buildChapterEditor(int chIdx) {
+    final chapter = _fChapters[chIdx];
+
+    return div(attributes: {
+      'style': 'margin-top: 18px; padding: 18px; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px;',
+    }, [
+      // Chapter Header Bar
+      div(attributes: {
+        'style': 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;',
+      }, [
+        div(attributes: {'style': 'display: flex; align-items: center; gap: 10px;'}, [
+          span(attributes: {
+            'style': 'padding: 4px 10px; background: #fbc51a; color: #0f172a; font-size: 12px; font-weight: 800; border-radius: 6px;',
+          }, [Component.text('Chapter ${chIdx + 1}')]),
+          span(attributes: {'style': 'color: #94a3b8; font-size: 13px; font-weight: 500;'}, [
+            Component.text('(${chapter.lessons.length} lectures)'),
+          ]),
+        ]),
+        div(attributes: {'style': 'display: flex; gap: 8px;'}, [
+          button(
+            classes: 'btn btn-outline-sm',
+            events: {'click': (e) => _addLesson(chIdx)},
+            [Component.text('+ Add Lecture')],
+          ),
+          button(
+            classes: 'btn-icon-danger',
+            events: {'click': (e) => _removeChapter(chIdx)},
+            [Component.text('🗑️')],
+          ),
+        ]),
+      ]),
+
+      // Chapter Title & Desc
+      div(classes: 'form-grid-2', [
+        div(classes: 'form-group', [
+          label([Component.text('Chapter Title')]),
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: chapter.title,
+            events: {'input': (e) => _updateChapterTitle(chIdx, _val(e))},
+          ),
+        ]),
+        div(classes: 'form-group', [
+          label([Component.text('Chapter Description / Objectives')]),
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: chapter.description ?? '',
+            events: {'input': (e) => _updateChapterDesc(chIdx, _val(e))},
+          ),
+        ]),
+      ]),
+
+      // Lessons in this chapter
+      div(attributes: {'style': 'margin-top: 10px;'}, [
+        if (chapter.lessons.isEmpty)
+          p(attributes: {'style': 'color: #64748b; font-size: 13px; margin: 8px 0;'}, [
+            Component.text('No lectures in this chapter yet. Click "+ Add Lecture" above.'),
+          ])
+        else
+          for (int lIdx = 0; lIdx < chapter.lessons.length; lIdx++)
+            _buildLessonEditor(chIdx, lIdx),
+      ]),
+    ]);
+  }
+
+  Component _buildLessonEditor(int chIdx, int lIdx) {
+    final chapter = _fChapters[chIdx];
+    final lesson = chapter.lessons[lIdx];
+    final lessonKey = '${chapter.id}-$lIdx';
+    final isPreviewing = _previewingLessonId == lessonKey;
+
+    return div(attributes: {
+      'style': 'margin-top: 10px; padding: 12px; background: #141d2e; border: 1px solid #27354f; border-radius: 8px;',
+    }, [
+      div(attributes: {
+        'style': 'display: flex; align-items: center; gap: 10px; flex-wrap: wrap;',
+      }, [
+        span(attributes: {
+          'style': 'color: #64748b; font-weight: 700; font-size: 12px; min-width: 28px;',
+        }, [Component.text('#${lIdx + 1}')]),
+        // Title input
+        div(attributes: {'style': 'flex: 3 1 200px;'}, [
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: lesson.title,
+            attributes: {'placeholder': 'Lecture Title (e.g. Setting up the Pipeline)'},
+            events: {'input': (e) => _updateLesson(chIdx, lIdx, title: _val(e))},
+          ),
+        ]),
+        // Duration input
+        div(attributes: {'style': 'flex: 1 1 90px;'}, [
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: lesson.duration,
+            attributes: {'placeholder': 'e.g. 15 min'},
+            events: {'input': (e) => _updateLesson(chIdx, lIdx, duration: _val(e))},
+          ),
+        ]),
+        // Video URL input
+        div(attributes: {'style': 'flex: 4 1 240px;'}, [
+          input(
+            type: InputType.text,
+            classes: 'admin-input',
+            value: lesson.videoUrl,
+            attributes: {'placeholder': 'YouTube, Google Drive, or Web Link'},
+            events: {
+              'input': (e) {
+                _updateLesson(chIdx, lIdx, videoUrl: _val(e));
+                setState(() {});
+              },
+            },
+          ),
+        ]),
+        // Free preview toggle
+        label(attributes: {
+          'style': 'display: flex; align-items: center; gap: 6px; color: #94a3b8; font-size: 12px; cursor: pointer;',
+        }, [
+          input(
+            type: InputType.checkbox,
+            checked: lesson.isFreePreview,
+            events: {'change': (e) => _updateLesson(chIdx, lIdx, isFreePreview: _chk(e))},
+          ),
+          Component.text('Free Preview'),
+        ]),
+        // Test player button
+        if (lesson.videoUrl.trim().isNotEmpty)
+          button(
+            classes: 'btn btn-outline-sm',
+            events: {
+              'click': (e) {
+                setState(() {
+                  _previewingLessonId = isPreviewing ? null : lessonKey;
+                });
+              },
+            },
+            [Component.text(isPreviewing ? 'Close Player ✕' : 'Test Player ▶')],
+          ),
+        // Delete lesson button
+        button(
+          classes: 'btn-icon-danger',
+          events: {'click': (e) => _removeLesson(chIdx, lIdx)},
+          [Component.text('🗑️')],
+        ),
+      ]),
+      if (isPreviewing && lesson.videoUrl.trim().isNotEmpty) ...[
+        div(attributes: {'style': 'margin-top: 12px;'}, [
+          VideoEmbedPlayer(
+            videoUrl: lesson.videoUrl.trim(),
+            title: lesson.title,
+          ),
+        ]),
+      ],
     ]);
   }
 }

@@ -46,9 +46,9 @@ class CourseCard extends StatelessComponent {
       ]),
       div(classes: 'course-footer', [
         Link(
-          to: '/contact',
+          to: '/courses/${course.id}',
           classes: 'btn ${course.isFree ? "btn-free" : "btn-primary"}',
-          child: Component.text(course.ctaText),
+          child: Component.text('Explore Curriculum & Videos →'),
         ),
       ]),
     ]);

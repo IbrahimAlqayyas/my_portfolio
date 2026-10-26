@@ -31,6 +31,7 @@ Built with modern web technologies and clean architecture, it features customiza
     videos: [
       'https://www.w3schools.com/html/mov_bbb.mp4',
     ],
+    introVideoUrl: 'https://www.youtube.com/watch?v=fq4N0hgOWzU',
     gifs: [
       'https://media.giphy.com/media/3oKIPeEyWA0T143648/giphy.gif',
     ],

@@ -1,3 +1,102 @@
+class CourseLesson {
+  final String id;
+  final String title;
+  final String duration;
+  final String videoUrl;
+  final bool isFreePreview;
+  final String? notes;
+
+  const CourseLesson({
+    required this.id,
+    required this.title,
+    this.duration = '',
+    required this.videoUrl,
+    this.isFreePreview = false,
+    this.notes,
+  });
+
+  CourseLesson copyWith({
+    String? id,
+    String? title,
+    String? duration,
+    String? videoUrl,
+    bool? isFreePreview,
+    String? notes,
+  }) {
+    return CourseLesson(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      duration: duration ?? this.duration,
+      videoUrl: videoUrl ?? this.videoUrl,
+      isFreePreview: isFreePreview ?? this.isFreePreview,
+      notes: notes ?? this.notes,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'duration': duration,
+    'videoUrl': videoUrl,
+    'isFreePreview': isFreePreview,
+    if (notes != null) 'notes': notes,
+  };
+
+  factory CourseLesson.fromJson(Map<String, dynamic> json) => CourseLesson(
+    id: json['id'] as String? ?? 'lesson-${DateTime.now().millisecondsSinceEpoch}',
+    title: json['title'] as String? ?? '',
+    duration: json['duration'] as String? ?? '',
+    videoUrl: json['videoUrl'] as String? ?? '',
+    isFreePreview: json['isFreePreview'] as bool? ?? false,
+    notes: json['notes'] as String?,
+  );
+}
+
+class CourseChapter {
+  final String id;
+  final String title;
+  final String? description;
+  final List<CourseLesson> lessons;
+
+  const CourseChapter({
+    required this.id,
+    required this.title,
+    this.description,
+    this.lessons = const [],
+  });
+
+  CourseChapter copyWith({
+    String? id,
+    String? title,
+    String? description,
+    List<CourseLesson>? lessons,
+  }) {
+    return CourseChapter(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      lessons: lessons ?? this.lessons,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    if (description != null) 'description': description,
+    'lessons': lessons.map((l) => l.toJson()).toList(),
+  };
+
+  factory CourseChapter.fromJson(Map<String, dynamic> json) => CourseChapter(
+    id: json['id'] as String? ?? 'chapter-${DateTime.now().millisecondsSinceEpoch}',
+    title: json['title'] as String? ?? '',
+    description: json['description'] as String?,
+    lessons: (json['lessons'] as List<dynamic>?)
+            ?.map((e) => CourseLesson.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+  );
+}
+
 class Course {
   final String id;
   final String title;
@@ -15,6 +114,8 @@ class Course {
   final String? ctaUrl;
   final String icon;
   final bool isFeatured;
+  final String? introVideoUrl;
+  final List<CourseChapter> chapters;
 
   const Course({
     required this.id,
@@ -33,7 +134,11 @@ class Course {
     this.ctaUrl,
     required this.icon,
     this.isFeatured = false,
+    this.introVideoUrl,
+    this.chapters = const [],
   });
+
+  int get totalLessonsCount => chapters.fold(0, (acc, c) => acc + c.lessons.length);
 
   Course copyWith({
     String? id,
@@ -52,6 +157,8 @@ class Course {
     String? ctaUrl,
     String? icon,
     bool? isFeatured,
+    String? introVideoUrl,
+    List<CourseChapter>? chapters,
   }) {
     return Course(
       id: id ?? this.id,
@@ -70,6 +177,8 @@ class Course {
       ctaUrl: ctaUrl ?? this.ctaUrl,
       icon: icon ?? this.icon,
       isFeatured: isFeatured ?? this.isFeatured,
+      introVideoUrl: introVideoUrl ?? this.introVideoUrl,
+      chapters: chapters ?? this.chapters,
     );
   }
 
@@ -91,6 +200,8 @@ class Course {
       'ctaUrl': ctaUrl,
       'icon': icon,
       'isFeatured': isFeatured,
+      'introVideoUrl': introVideoUrl,
+      'chapters': chapters.map((c) => c.toJson()).toList(),
     };
   }
 
@@ -112,6 +223,11 @@ class Course {
       ctaUrl: json['ctaUrl'] as String?,
       icon: json['icon'] as String? ?? '🎓',
       isFeatured: json['isFeatured'] as bool? ?? false,
+      introVideoUrl: json['introVideoUrl'] as String?,
+      chapters: (json['chapters'] as List<dynamic>?)
+              ?.map((e) => CourseChapter.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 }

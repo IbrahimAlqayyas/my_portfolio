@@ -26,6 +26,9 @@ class DartCodeGenerator {
       buffer.writeln("    gifs: [${p.gifs.map((g) => "'${_escape(g)}'").join(', ')}],");
       if (p.demoUrl != null) buffer.writeln("    demoUrl: '${_escape(p.demoUrl!)}',");
       if (p.githubUrl != null) buffer.writeln("    githubUrl: '${_escape(p.githubUrl!)}',");
+      if (p.introVideoUrl != null && p.introVideoUrl!.isNotEmpty) {
+        buffer.writeln("    introVideoUrl: '${_escape(p.introVideoUrl!)}',");
+      }
       buffer.writeln('    isFeatured: ${p.isFeatured},');
       buffer.writeln('  ),');
     }
@@ -65,7 +68,37 @@ class DartCodeGenerator {
       if (c.ctaUrl != null) buffer.writeln("    ctaUrl: '${_escape(c.ctaUrl!)}',");
       buffer.writeln("    topics: [${c.topics.map((t) => "'${_escape(t)}'").join(', ')}],");
       buffer.writeln("    features: [${c.features.map((f) => "'${_escape(f)}'").join(', ')}],");
+      if (c.introVideoUrl != null && c.introVideoUrl!.isNotEmpty) {
+        buffer.writeln("    introVideoUrl: '${_escape(c.introVideoUrl!)}',");
+      }
       buffer.writeln('    isFeatured: ${c.isFeatured},');
+      if (c.chapters.isNotEmpty) {
+        buffer.writeln('    chapters: [');
+        for (var ch in c.chapters) {
+          buffer.writeln('      CourseChapter(');
+          buffer.writeln("        id: '${_escape(ch.id)}',");
+          buffer.writeln("        title: '${_escape(ch.title)}',");
+          if (ch.description != null && ch.description!.isNotEmpty) {
+            buffer.writeln("        description: '${_escape(ch.description!)}',");
+          }
+          buffer.writeln('        lessons: [');
+          for (var l in ch.lessons) {
+            buffer.writeln('          CourseLesson(');
+            buffer.writeln("            id: '${_escape(l.id)}',");
+            buffer.writeln("            title: '${_escape(l.title)}',");
+            buffer.writeln("            duration: '${_escape(l.duration)}',");
+            buffer.writeln("            videoUrl: '${_escape(l.videoUrl)}',");
+            buffer.writeln('            isFreePreview: ${l.isFreePreview},');
+            if (l.notes != null && l.notes!.isNotEmpty) {
+              buffer.writeln("            notes: '${_escape(l.notes!)}',");
+            }
+            buffer.writeln('          ),');
+          }
+          buffer.writeln('        ],');
+          buffer.writeln('      ),');
+        }
+        buffer.writeln('    ],');
+      }
       buffer.writeln('  ),');
     }
     buffer.writeln('];\n');
@@ -84,6 +117,6 @@ class DartCodeGenerator {
   }
 
   static String _escape(String str) {
-    return str.replaceAll("'", r"\'");
+    return str.replaceAll(r'\', r'\\').replaceAll("'", r"\'");
   }
 }
