@@ -1,9 +1,9 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
-import 'package:jaspr_router/jaspr_router.dart';
 
 import '../constants/theme.dart';
 import '../services/content_repository.dart';
+import '../utils/env_helper.dart';
 import '../utils/scroll_helper.dart';
 import 'admin/admin_courses_tab.dart';
 import 'admin/admin_engineering_tab.dart';
@@ -52,6 +52,32 @@ class _AdminPageState extends State<AdminPage> {
 
   @override
   Component build(BuildContext context) {
+    if (!isLocalhost()) {
+      return section(classes: 'admin-container', [
+        div(classes: 'admin-card admin-denied-box', [
+          div(classes: 'denied-icon-wrap', [Component.text('🔒')]),
+          h2([Component.text('Access Restricted: Local Environment Only')]),
+          p([
+            Component.text(
+              'The CMS Admin Studio is configured to run exclusively on your local workstation (localhost).',
+            ),
+          ]),
+          p(classes: 'hint-text', [
+            Component.text(
+              'To access this panel and manage content, start the development server locally on your computer with `jaspr serve` and visit http://localhost:8080/admin.',
+            ),
+          ]),
+          div(classes: 'inline-actions', [
+            a(
+              href: '/',
+              classes: 'btn btn-primary',
+              [Component.text('← Return to Portfolio Home')],
+            ),
+          ]),
+        ]),
+      ]);
+    }
+
     return section(classes: 'admin-container', [
       // Top Header & Sticky Control Bar
       div(classes: 'admin-header-bar', [
@@ -66,7 +92,12 @@ class _AdminPageState extends State<AdminPage> {
           ]),
         ]),
         div(classes: 'admin-header-right', [
-          Link(to: '/', classes: 'btn btn-secondary btn-view-website', child: Component.text('👁️ View Website')),
+          a(
+            href: '/',
+            target: Target.blank,
+            classes: 'btn btn-secondary btn-view-website',
+            [Component.text('👁️ View Website')],
+          ),
           button(
             classes: 'btn btn-primary btn-save-master',
             events: {'click': (e) => _triggerSave()},
@@ -428,6 +459,35 @@ class _AdminPageState extends State<AdminPage> {
         ),
       ]),
 
+      css('.admin-denied-box', [
+        css('&').styles(
+          display: Display.flex,
+          flexDirection: FlexDirection.column,
+          alignItems: AlignItems.center,
+          textAlign: TextAlign.center,
+          padding: Padding.symmetric(vertical: 4.rem, horizontal: 2.rem),
+          maxWidth: 680.px,
+          margin: Margin.symmetric(horizontal: Unit.auto),
+        ),
+        css('.denied-icon-wrap').styles(
+          fontSize: 3.5.rem,
+          margin: Margin.only(bottom: 1.2.rem),
+        ),
+        css('h2').styles(
+          fontSize: 1.6.rem,
+          fontWeight: FontWeight.w800,
+          color: textColor,
+          margin: Margin.only(bottom: 0.8.rem),
+        ),
+        css('p').styles(
+          fontSize: 0.98.rem,
+          color: textMutedColor,
+          lineHeight: 1.6.em,
+          margin: Margin.only(bottom: 1.rem),
+          maxWidth: 520.px,
+        ),
+      ]),
+
       // Form Styles
       css('.form-group', [
         css('&').styles(
@@ -668,46 +728,64 @@ class _AdminPageState extends State<AdminPage> {
         ]),
       ]),
 
-      // Projects & Courses Grids in Admin
-      css('.admin-projects-grid, .admin-courses-grid', [
+      // Projects Grid & Cards
+      css('.admin-projects-grid', [
         css('&').styles(
           display: Display.grid,
+          width: 100.percent,
           raw: {
             'grid-template-columns': 'repeat(auto-fill, minmax(320px, 1fr))',
             'gap': '1.5rem',
+            'box-sizing': 'border-box',
           },
         ),
       ]),
-      css('.admin-item-card, .admin-course-card', [
+      css('.admin-item-card', [
         css('&').styles(
-          backgroundColor: Color.rgba(15, 23, 42, 0.65),
+          backgroundColor: Color.rgba(15, 23, 42, 0.75),
           border: Border.all(color: surfaceBorder, width: 1.px),
           radius: BorderRadius.all(Radius.circular(18.px)),
           overflow: Overflow.hidden,
           display: Display.flex,
           flexDirection: FlexDirection.column,
+          minHeight: 460.px,
+          boxSizing: BoxSizing.borderBox,
           transition: Transition('all', duration: Duration(milliseconds: 200)),
+        ),
+        css('&:hover').styles(
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(0, 0, 0, 0.35)),
+          raw: {'transform': 'translateY(-2px)'},
         ),
         css('&.featured-border').styles(
           border: Border.all(color: primaryColor, width: 1.px),
-          raw: {'box-shadow': '0 0 16px rgba(251, 197, 26, 0.15)'},
+          raw: {'box-shadow': '0 0 18px rgba(251, 197, 26, 0.22)'},
         ),
         css('.item-card-image', [
           css('&').styles(
             position: Position.relative(),
-            height: 160.px,
+            height: 180.px,
+            width: 100.percent,
             overflow: Overflow.hidden,
+            backgroundColor: Color.rgba(11, 17, 32, 0.95),
+            flex: Flex(shrink: 0),
           ),
           css('img').styles(
             width: 100.percent,
             height: 100.percent,
-            raw: {'object-fit': 'cover'},
+            raw: {
+              'object-fit': 'cover',
+              'display': 'block',
+              'transition': 'transform 0.3s ease',
+            },
           ),
           css('.badge-pos-left').styles(
             position: Position.absolute(top: 10.px, left: 10.px),
+            raw: {'z-index': '2'},
           ),
           css('.badge-pos-right').styles(
             position: Position.absolute(top: 10.px, right: 10.px),
+            raw: {'z-index': '2'},
           ),
         ]),
         css('.item-card-body', [
@@ -716,28 +794,210 @@ class _AdminPageState extends State<AdminPage> {
             display: Display.flex,
             flexDirection: FlexDirection.column,
             flex: Flex(grow: 1),
+            boxSizing: BoxSizing.borderBox,
+          ),
+          css('.item-tag-row').styles(
+            display: Display.flex,
+            alignItems: AlignItems.center,
+            justifyContent: JustifyContent.spaceBetween,
+            gap: Gap.all(8.px),
+            margin: Margin.only(bottom: 0.6.rem),
+          ),
+          css('.admin-chip-small').styles(
+            display: Display.inlineFlex,
+            alignItems: AlignItems.center,
+            padding: Padding.symmetric(vertical: 3.px, horizontal: 8.px),
+            radius: BorderRadius.all(Radius.circular(6.px)),
+            fontSize: 0.78.rem,
+            fontWeight: FontWeight.w700,
+            backgroundColor: Color.rgba(251, 197, 26, 0.12),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
+          ),
+          css('.scope-text').styles(
+            fontSize: 0.8.rem,
+            color: textMutedColor,
+            raw: {
+              'overflow': 'hidden',
+              'text-overflow': 'ellipsis',
+              'white-space': 'nowrap',
+              'max-width': '160px',
+            },
           ),
           css('h4').styles(
             fontSize: 1.2.rem,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
             color: textColor,
-            margin: Margin.only(bottom: 0.4.rem),
+            lineHeight: 1.35.em,
+            margin: Margin.only(bottom: 0.5.rem),
+          ),
+          css('.tags-inline').styles(
+            display: Display.flex,
+            flexWrap: FlexWrap.wrap,
+            gap: Gap.all(6.px),
+            margin: Margin.only(bottom: 1.1.rem),
+          ),
+          css('.tag-mini').styles(
+            fontSize: 0.75.rem,
+            padding: Padding.symmetric(vertical: 2.px, horizontal: 8.px),
+            radius: BorderRadius.all(Radius.circular(6.px)),
+            backgroundColor: Color.rgba(255, 255, 255, 0.05),
+            border: Border.all(color: Color.rgba(255, 255, 255, 0.08), width: 1.px),
+            color: Color('#cbd5e1'),
           ),
         ]),
+      ]),
+
+      // Courses Grid & Cards
+      css('.admin-courses-grid', [
+        css('&').styles(
+          display: Display.grid,
+          width: 100.percent,
+          raw: {
+            'grid-template-columns': 'repeat(auto-fill, minmax(320px, 1fr))',
+            'gap': '1.5rem',
+            'box-sizing': 'border-box',
+          },
+        ),
+      ]),
+      css('.admin-course-card', [
+        css('&').styles(
+          backgroundColor: Color.rgba(15, 23, 42, 0.75),
+          border: Border.all(color: surfaceBorder, width: 1.px),
+          radius: BorderRadius.all(Radius.circular(18.px)),
+          overflow: Overflow.hidden,
+          display: Display.flex,
+          flexDirection: FlexDirection.column,
+          minHeight: 520.px,
+          boxSizing: BoxSizing.borderBox,
+          transition: Transition('all', duration: Duration(milliseconds: 200)),
+        ),
+        css('&:hover').styles(
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(0, 0, 0, 0.35)),
+          raw: {'transform': 'translateY(-2px)'},
+        ),
+        css('&.featured-border').styles(
+          border: Border.all(color: primaryColor, width: 1.px),
+          raw: {'box-shadow': '0 0 18px rgba(251, 197, 26, 0.22)'},
+        ),
         css('.course-card-top-bar', [
           css('&').styles(
             display: Display.flex,
             justifyContent: JustifyContent.spaceBetween,
             alignItems: AlignItems.center,
-            padding: Padding.all(1.2.rem),
-            raw: {'border-bottom': '1px solid rgba(255, 255, 255, 0.05)'},
+            padding: Padding.symmetric(vertical: 1.1.rem, horizontal: 1.4.rem),
+            backgroundColor: Color.rgba(255, 255, 255, 0.02),
+            raw: {'border-bottom': '1px solid rgba(255, 255, 255, 0.06)'},
+            flex: Flex(shrink: 0),
           ),
-          css('.course-icon-lg').styles(fontSize: 2.rem),
+          css('.course-icon-lg').styles(
+            fontSize: 2.2.rem,
+            lineHeight: 1.em,
+          ),
           css('.badges-wrap').styles(
             display: Display.flex,
             alignItems: AlignItems.center,
             gap: Gap.all(6.px),
+            flexWrap: FlexWrap.wrap,
           ),
+        ]),
+        css('.course-card-body', [
+          css('&').styles(
+            padding: Padding.all(1.4.rem),
+            display: Display.flex,
+            flexDirection: FlexDirection.column,
+            flex: Flex(grow: 1),
+            boxSizing: BoxSizing.borderBox,
+          ),
+          css('.course-title').styles(
+            fontSize: 1.22.rem,
+            fontWeight: FontWeight.w800,
+            color: textColor,
+            lineHeight: 1.35.em,
+            margin: Margin.only(bottom: 0.4.rem),
+          ),
+          css('.course-sub').styles(
+            fontSize: 0.9.rem,
+            fontWeight: FontWeight.w600,
+            color: primaryColor,
+            lineHeight: 1.4.em,
+            margin: Margin.only(bottom: 0.9.rem),
+          ),
+          css('.course-meta-pills', [
+            css('&').styles(
+              display: Display.flex,
+              flexWrap: FlexWrap.wrap,
+              gap: Gap.all(8.px),
+              margin: Margin.only(bottom: 1.rem),
+            ),
+            css('.meta-pill', [
+              css('&').styles(
+                display: Display.inlineFlex,
+                alignItems: AlignItems.center,
+                gap: Gap.all(6.px),
+                padding: Padding.symmetric(vertical: 4.px, horizontal: 10.px),
+                radius: BorderRadius.all(Radius.circular(8.px)),
+                backgroundColor: Color.rgba(255, 255, 255, 0.05),
+                border: Border.all(color: Color.rgba(255, 255, 255, 0.08), width: 1.px),
+                fontSize: 0.78.rem,
+                fontWeight: FontWeight.w600,
+                color: Color('#cbd5e1'),
+              ),
+              css('.meta-pill-icon').styles(fontSize: 0.85.rem),
+              css('.meta-pill-text').styles(color: Color('#cbd5e1')),
+            ]),
+          ]),
+          css('.curriculum-preview', [
+            css('&').styles(
+              backgroundColor: Color.rgba(15, 23, 42, 0.5),
+              border: Border.all(color: Color.rgba(255, 255, 255, 0.06), width: 1.px),
+              radius: BorderRadius.all(Radius.circular(12.px)),
+              padding: Padding.symmetric(vertical: 0.85.rem, horizontal: 1.rem),
+              margin: Margin.only(bottom: 1.2.rem),
+            ),
+            css('.curriculum-preview-title').styles(
+              fontSize: 0.82.rem,
+              fontWeight: FontWeight.w700,
+              color: Color('#e2e8f0'),
+              display: Display.block,
+              margin: Margin.only(bottom: 0.5.rem),
+              raw: {
+                'text-transform': 'uppercase',
+                'letter-spacing': '0.5px',
+              },
+            ),
+            css('.preview-bullets', [
+              css('&').styles(
+                display: Display.flex,
+                flexDirection: FlexDirection.column,
+                gap: Gap.all(6.px),
+                margin: Margin.zero,
+                padding: Padding.zero,
+                raw: {'list-style': 'none'},
+              ),
+              css('.curriculum-bullet-item', [
+                css('&').styles(
+                  display: Display.flex,
+                  alignItems: AlignItems.start,
+                  gap: Gap.all(8.px),
+                  fontSize: 0.84.rem,
+                  color: textMutedColor,
+                  lineHeight: 1.45.em,
+                ),
+                css('.bullet-check-icon').styles(
+                  color: emeraldAccent,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 0.9.rem,
+                  lineHeight: 1.2.em,
+                  raw: {'flex-shrink': '0'},
+                ),
+                css('.bullet-item-text').styles(
+                  flex: Flex(grow: 1),
+                ),
+              ]),
+            ]),
+          ]),
         ]),
       ]),
 
@@ -846,6 +1106,11 @@ class _AdminPageState extends State<AdminPage> {
         fontSize: 0.82.rem,
         fontWeight: FontWeight.w600,
         cursor: Cursor.pointer,
+      ),
+      css('.btn-group-right').styles(
+        display: Display.flex,
+        alignItems: AlignItems.center,
+        gap: Gap.all(8.px),
       ),
       css('.btn-icon-danger').styles(
         backgroundColor: Color.rgba(255, 87, 123, 0.12),
