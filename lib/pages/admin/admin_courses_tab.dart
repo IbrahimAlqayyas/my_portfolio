@@ -381,48 +381,62 @@ class _AdminCoursesTabState extends State<AdminCoursesTab> {
                       span(classes: 'featured-pill', [Component.text('⭐ Featured (1st)')]),
                   ]),
                 ]),
-                h4([Component.text(course.title)]),
-                p(classes: 'course-sub', [Component.text(course.subtitle)]),
-                div(classes: 'course-meta-pills', [
-                  span(classes: 'meta-pill', [Component.text('⏱️ ${course.duration}')]),
-                  span(classes: 'meta-pill', [Component.text('🎯 ${course.level}')]),
-                  span(classes: 'meta-pill', [Component.text('📂 ${course.category}')]),
-                ]),
-                p(classes: 'item-desc-short', [Component.text(course.description)]),
-                div(classes: 'curriculum-preview', [
-                  strong([Component.text('Curriculum Topics (${course.topics.length}):')]),
-                  ul(classes: 'preview-bullets', [
-                    for (var t in course.topics.take(3))
-                      li([Component.text('✓ $t')]),
+                div(classes: 'course-card-body', [
+                  h4(classes: 'course-title', [Component.text(course.title)]),
+                  p(classes: 'course-sub', [Component.text(course.subtitle)]),
+                  div(classes: 'course-meta-pills', [
+                    span(classes: 'meta-pill', [
+                      span(classes: 'meta-pill-icon', [Component.text('⏱️')]),
+                      span(classes: 'meta-pill-text', [Component.text(course.duration)]),
+                    ]),
+                    span(classes: 'meta-pill', [
+                      span(classes: 'meta-pill-icon', [Component.text('🎯')]),
+                      span(classes: 'meta-pill-text', [Component.text(course.level)]),
+                    ]),
+                    span(classes: 'meta-pill', [
+                      span(classes: 'meta-pill-icon', [Component.text('📂')]),
+                      span(classes: 'meta-pill-text', [Component.text(course.category)]),
+                    ]),
                   ]),
-                ]),
-                div(classes: 'item-actions-footer', [
-                  button(
-                    classes: 'btn-action-featured ${course.isFeatured ? "active" : ""}',
-                    events: {
-                      'click': (e) {
-                        contentRepository.toggleCourseFeatured(course.id);
-                        setState(() {});
-                      },
-                    },
-                    [Component.text(course.isFeatured ? '⭐ Featured' : '☆ Feature')],
-                  ),
-                  div(classes: 'btn-group-right', [
+                  p(classes: 'item-desc-short', [Component.text(course.description)]),
+                  div(classes: 'curriculum-preview', [
+                    span(classes: 'curriculum-preview-title', [Component.text('Curriculum Topics (${course.topics.length}):')]),
+                    ul(classes: 'preview-bullets', [
+                      for (var t in course.topics.take(4))
+                        li(classes: 'curriculum-bullet-item', [
+                          span(classes: 'bullet-check-icon', [Component.text('✓')]),
+                          span(classes: 'bullet-item-text', [Component.text(t)]),
+                        ]),
+                    ]),
+                  ]),
+                  div(classes: 'item-actions-footer', [
                     button(
-                      classes: 'btn btn-outline-sm',
-                      events: {'click': (e) => _openEditCourse(course)},
-                      [Component.text('Edit ✏️')],
-                    ),
-                    button(
-                      classes: 'btn-icon-danger',
+                      classes: 'btn-action-featured ${course.isFeatured ? "active" : ""}',
                       events: {
                         'click': (e) {
-                          contentRepository.deleteCourse(course.id);
+                          contentRepository.toggleCourseFeatured(course.id);
                           setState(() {});
                         },
                       },
-                      [Component.text('🗑️')],
+                      [Component.text(course.isFeatured ? '⭐ Featured' : '☆ Feature')],
                     ),
+                    div(classes: 'btn-group-right', [
+                      button(
+                        classes: 'btn btn-outline-sm',
+                        events: {'click': (e) => _openEditCourse(course)},
+                        [Component.text('Edit ✏️')],
+                      ),
+                      button(
+                        classes: 'btn-icon-danger',
+                        events: {
+                          'click': (e) {
+                            contentRepository.deleteCourse(course.id);
+                            setState(() {});
+                          },
+                        },
+                        [Component.text('🗑️')],
+                      ),
+                    ]),
                   ]),
                 ]),
               ]),

@@ -66,7 +66,7 @@ class _AdminPageState extends State<AdminPage> {
           ]),
         ]),
         div(classes: 'admin-header-right', [
-          Link(to: '/', classes: 'btn btn-secondary', child: Component.text('👁️ View Website')),
+          Link(to: '/', classes: 'btn btn-secondary btn-view-website', child: Component.text('👁️ View Website')),
           button(
             classes: 'btn btn-primary btn-save-master',
             events: {'click': (e) => _triggerSave()},
@@ -205,15 +205,113 @@ class _AdminPageState extends State<AdminPage> {
             gap: Gap.all(12.px),
             flexWrap: FlexWrap.wrap,
           ),
-          css('.btn-save-master').styles(
-            backgroundColor: primaryColor,
-            color: backgroundColor,
-            padding: Padding.symmetric(vertical: 14.px, horizontal: 24.px),
-            fontWeight: FontWeight.w800,
-            fontSize: 1.05.rem,
-            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
-          ),
+          css('.btn-view-website', [
+            css('&').styles(
+              backgroundColor: Color.rgba(255, 255, 255, 0.08),
+              color: textColor,
+              border: Border.all(color: Color.rgba(255, 255, 255, 0.25), width: 1.px),
+              padding: Padding.symmetric(vertical: 14.px, horizontal: 22.px),
+              radius: BorderRadius.all(Radius.circular(14.px)),
+              fontWeight: FontWeight.w700,
+              fontSize: 1.02.rem,
+              display: Display.inlineFlex,
+              alignItems: AlignItems.center,
+              justifyContent: JustifyContent.center,
+              gap: Gap.all(8.px),
+              textDecoration: TextDecoration(line: TextDecorationLine.none),
+              transition: Transition('all', duration: Duration(milliseconds: 200)),
+            ),
+            css('&:hover').styles(
+              backgroundColor: Color.rgba(251, 197, 26, 0.15),
+              color: primaryColor,
+              border: Border.all(color: primaryColor, width: 1.px),
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.25)),
+              raw: {'transform': 'translateY(-2px)'},
+            ),
+          ]),
+          css('.btn-save-master', [
+            css('&').styles(
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              border: Border.all(color: primaryColor, width: 1.px),
+              padding: Padding.symmetric(vertical: 14.px, horizontal: 24.px),
+              radius: BorderRadius.all(Radius.circular(14.px)),
+              fontWeight: FontWeight.w800,
+              fontSize: 1.05.rem,
+              display: Display.inlineFlex,
+              alignItems: AlignItems.center,
+              justifyContent: JustifyContent.center,
+              cursor: Cursor.pointer,
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
+              transition: Transition('all', duration: Duration(milliseconds: 200)),
+            ),
+            css('&:hover').styles(
+              backgroundColor: Color('#fde047'),
+              color: backgroundColor,
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 20.px, color: Color.rgba(251, 197, 26, 0.55)),
+              raw: {'transform': 'translateY(-2px)'},
+            ),
+          ]),
         ]),
+      ]),
+
+      // Universal buttons and links inside admin container
+      css('a, a:hover, a:visited, a:active').styles(
+        color: textColor,
+        textDecoration: TextDecoration(line: TextDecorationLine.none),
+      ),
+      css('.btn', [
+        css('&').styles(
+          display: Display.inlineFlex,
+          alignItems: AlignItems.center,
+          justifyContent: JustifyContent.center,
+          gap: Gap.all(8.px),
+          padding: Padding.symmetric(vertical: 12.px, horizontal: 20.px),
+          radius: BorderRadius.all(Radius.circular(12.px)),
+          fontWeight: FontWeight.w700,
+          fontSize: 0.95.rem,
+          textDecoration: TextDecoration(line: TextDecorationLine.none),
+          cursor: Cursor.pointer,
+          boxSizing: BoxSizing.borderBox,
+          transition: Transition('all', duration: Duration(milliseconds: 200)),
+        ),
+      ]),
+      css('.btn-primary', [
+        css('&').styles(
+          backgroundColor: primaryColor,
+          color: backgroundColor,
+          border: Border.all(color: primaryColor, width: 1.px),
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(251, 197, 26, 0.35)),
+        ),
+        css('&:hover').styles(
+          backgroundColor: Color('#fde047'),
+          color: backgroundColor,
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(251, 197, 26, 0.45)),
+        ),
+      ]),
+      css('.btn-secondary', [
+        css('&').styles(
+          backgroundColor: Color.rgba(255, 255, 255, 0.08),
+          color: textColor,
+          border: Border.all(color: surfaceBorder, width: 1.px),
+        ),
+        css('&:hover').styles(
+          backgroundColor: Color.rgba(255, 255, 255, 0.16),
+          color: Color('#ffffff'),
+          border: Border.all(color: Color.rgba(255, 255, 255, 0.4), width: 1.px),
+        ),
+      ]),
+      css('.btn-outline', [
+        css('&').styles(
+          backgroundColor: Colors.transparent,
+          color: primaryColor,
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.45), width: 1.px),
+        ),
+        css('&:hover').styles(
+          backgroundColor: Color.rgba(251, 197, 26, 0.12),
+          color: primaryColor,
+          border: Border.all(color: primaryColor, width: 1.px),
+        ),
       ]),
 
       css('.admin-toast-banner', [
@@ -878,9 +976,9 @@ class _AdminPageState extends State<AdminPage> {
       css('.tab-preview-icon').styles(fontSize: 2.rem),
       css('.badge-pill-fixed').styles(
         margin: Margin.only(left: Unit.auto),
-        backgroundColor: Color.rgba(56, 189, 248, 0.15),
-        color: blueAccent,
-        border: Border.all(color: blueAccent, width: 1.px),
+        backgroundColor: Color.rgba(110, 242, 123, 0.15),
+        color: emeraldAccent,
+        border: Border.all(color: Color.rgba(110, 242, 123, 0.4), width: 1.px),
         padding: Padding.symmetric(vertical: 4.px, horizontal: 10.px),
         radius: BorderRadius.all(Radius.circular(10.px)),
         fontSize: 0.8.rem,
