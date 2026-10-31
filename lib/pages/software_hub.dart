@@ -226,8 +226,9 @@ class _SoftwareHubState extends State<SoftwareHub> {
               shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 20.px, color: Color.rgba(251, 197, 26, 0.5)),
             ),
           ]),
           css('.btn-secondary', [
@@ -325,7 +326,8 @@ class _SoftwareHubState extends State<SoftwareHub> {
             transition: Transition('color', duration: Duration(milliseconds: 200)),
           ),
           css('.view-all-link:hover').styles(
-            color: secondaryColor,
+            color: primaryColor,
+            raw: {'filter': 'brightness(1.15)'},
           ),
         ]),
         css('.services-grid', [
@@ -403,8 +405,9 @@ class _SoftwareHubState extends State<SoftwareHub> {
           transition: Transition('all', duration: Duration(milliseconds: 250)),
         ),
         css('.btn:hover').styles(
-          backgroundColor: secondaryColor,
-          color: textColor,
+          backgroundColor: primaryColor,
+          raw: {'filter': 'brightness(1.12)'},
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 20.px, color: Color.rgba(251, 197, 26, 0.5)),
         ),
       ]),
     ]),

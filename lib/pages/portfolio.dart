@@ -250,8 +250,10 @@ class _PortfolioPageState extends State<PortfolioPage> {
               shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(251, 197, 26, 0.3)),
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 16.px, color: Color.rgba(251, 197, 26, 0.45)),
             ),
           ]),
           css('.btn-secondary', [

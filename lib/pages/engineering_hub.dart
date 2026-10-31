@@ -177,14 +177,14 @@ class _EngineeringHubState extends State<EngineeringHub> {
           raw: cardBackdropFilter,
         ),
         css('.hub-badge').styles(
-          backgroundColor: Color.rgba(255, 87, 123, 0.12),
-          color: secondaryColor,
+          backgroundColor: Color.rgba(251, 197, 26, 0.12),
+          color: primaryColor,
           padding: Padding.symmetric(vertical: 8.px, horizontal: 16.px),
           radius: BorderRadius.all(Radius.circular(20.px)),
           fontSize: 0.95.rem,
           fontWeight: FontWeight.w600,
           margin: Margin.only(bottom: 1.2.rem),
-          border: Border.all(color: Color.rgba(255, 87, 123, 0.3), width: 1.px),
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
         ),
         css('h1').styles(
           fontSize: 3.5.rem,
@@ -196,7 +196,7 @@ class _EngineeringHubState extends State<EngineeringHub> {
         css('.hub-subtitle').styles(
           fontSize: 1.4.rem,
           fontWeight: FontWeight.w600,
-          color: secondaryColor,
+          color: primaryColor,
           margin: Margin.symmetric(vertical: 1.rem),
         ),
         css('.hub-bio').styles(
@@ -223,13 +223,15 @@ class _EngineeringHubState extends State<EngineeringHub> {
           ),
           css('.btn-primary', [
             css('&').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
-              shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(255, 87, 123, 0.4)),
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
             ),
             css('&:hover').styles(
               backgroundColor: primaryColor,
               color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(251, 197, 26, 0.55)),
             ),
           ]),
           css('.btn-secondary', [
@@ -264,7 +266,7 @@ class _EngineeringHubState extends State<EngineeringHub> {
           css('h3').styles(
             fontSize: 2.2.rem,
             fontWeight: FontWeight.w800,
-            color: secondaryColor,
+            color: primaryColor,
             margin: Margin.only(bottom: 0.3.rem),
           ),
           css('p').styles(
@@ -320,14 +322,15 @@ class _EngineeringHubState extends State<EngineeringHub> {
             margin: Margin.zero,
           ),
           css('.view-all-link').styles(
-            color: secondaryColor,
+            color: primaryColor,
             fontWeight: FontWeight.w700,
             fontSize: 1.rem,
             textDecoration: TextDecoration(line: TextDecorationLine.none),
-            transition: Transition('color', duration: Duration(milliseconds: 200)),
+            transition: Transition('all', duration: Duration(milliseconds: 200)),
           ),
           css('.view-all-link:hover').styles(
             color: primaryColor,
+            raw: {'filter': 'brightness(1.2)'},
           ),
         ]),
         css('.services-grid', [
@@ -373,12 +376,12 @@ class _EngineeringHubState extends State<EngineeringHub> {
           width: 100.percent,
           maxWidth: 900.px,
           backgroundColor: cardBackground,
-          border: Border.all(color: secondaryColor, width: 1.px),
+          border: Border.all(color: primaryColor, width: 1.px),
           radius: BorderRadius.all(Radius.circular(24.px)),
           padding: Padding.all(3.rem),
           boxSizing: BoxSizing.borderBox,
           textAlign: TextAlign.center,
-          shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(255, 87, 123, 0.15)),
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(251, 197, 26, 0.15)),
           raw: cardBackdropFilter,
         ),
         css('h2').styles(
@@ -399,14 +402,15 @@ class _EngineeringHubState extends State<EngineeringHub> {
           fontWeight: FontWeight.w700,
           fontSize: 1.1.rem,
           textDecoration: TextDecoration(line: TextDecorationLine.none),
-          backgroundColor: secondaryColor,
-          color: textColor,
-          shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(255, 87, 123, 0.4)),
+          backgroundColor: primaryColor,
+          color: backgroundColor,
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
           transition: Transition('all', duration: Duration(milliseconds: 250)),
         ),
         css('.btn:hover').styles(
           backgroundColor: primaryColor,
           color: backgroundColor,
+          raw: {'filter': 'brightness(1.12)'},
         ),
       ]),
     ]),
@@ -464,7 +468,7 @@ class _ServiceCard extends StatelessComponent {
       ),
       css('&:hover').styles(
         raw: {
-          'border-color': '#ff577b',
+          'border-color': '#fbc51a',
           'transform': 'translateY(-4px)',
         },
       ),
@@ -501,7 +505,7 @@ class _ServiceCard extends StatelessComponent {
             margin: Margin.only(bottom: 6.px),
           ),
           css('.feat-bullet').styles(
-            color: secondaryColor,
+            color: primaryColor,
             fontWeight: FontWeight.w800,
             margin: Margin.only(right: 6.px),
           ),

@@ -261,26 +261,28 @@ class _ContactState extends State<Contact> {
               color: backgroundColor,
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
             ),
           ]),
         ]),
         css('.card-engineering', [
           css('&:hover').styles(
             raw: {
-              'border-color': '#ff577b',
+              'border-color': '#fbc51a',
               'transform': 'translateY(-4px)',
             },
           ),
           css('.btn-engineering', [
             css('&').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              color: backgroundColor,
             ),
             css('&:hover').styles(
               backgroundColor: primaryColor,
               color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
             ),
           ]),
         ]),
@@ -354,7 +356,8 @@ class _ContactState extends State<Contact> {
               transition: Transition('color', duration: Duration(milliseconds: 200)),
             ),
             css('a:hover').styles(
-              color: secondaryColor,
+              color: primaryColor,
+              raw: {'filter': 'brightness(1.2)'},
             ),
           ]),
         ]),

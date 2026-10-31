@@ -235,9 +235,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
             border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
           ),
           css('.badge-engineering').styles(
-            backgroundColor: Color.rgba(255, 87, 123, 0.15),
-            color: secondaryColor,
-            border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
+            backgroundColor: Color.rgba(251, 197, 26, 0.15),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
           ),
           css('.main-tag-badge').styles(
             backgroundColor: Color.rgba(255, 255, 255, 0.08),
@@ -305,8 +305,10 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               color: backgroundColor,
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 16.px, color: Color.rgba(251, 197, 26, 0.45)),
             ),
           ]),
           css('.btn-secondary', [
@@ -456,8 +458,10 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               color: backgroundColor,
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 16.px, color: Color.rgba(251, 197, 26, 0.45)),
             ),
           ]),
           css('.btn-secondary', [

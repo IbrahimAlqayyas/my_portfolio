@@ -215,9 +215,9 @@ class _AboutState extends State<About> {
             margin: Margin.only(bottom: 1.2.rem),
           ),
           css('.card-highlight').styles(
-            backgroundColor: Color.rgba(255, 87, 123, 0.12),
-            color: secondaryColor,
-            border: Border.all(color: Color.rgba(255, 87, 123, 0.3), width: 1.px),
+            backgroundColor: Color.rgba(251, 197, 26, 0.12),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.3), width: 1.px),
             padding: Padding.all(1.rem),
             radius: BorderRadius.all(Radius.circular(12.px)),
             fontSize: 0.9.rem,
@@ -280,8 +280,10 @@ class _AboutState extends State<About> {
               color: backgroundColor,
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              color: backgroundColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 16.px, color: Color.rgba(251, 197, 26, 0.45)),
             ),
           ]),
           css('.btn-secondary', [
@@ -395,8 +397,10 @@ class _AboutState extends State<About> {
           transition: Transition('all', duration: Duration(milliseconds: 200)),
         ),
         css('.btn:hover').styles(
-          backgroundColor: secondaryColor,
-          color: textColor,
+          backgroundColor: primaryColor,
+          color: backgroundColor,
+          raw: {'filter': 'brightness(1.12)'},
+          shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 16.px, color: Color.rgba(251, 197, 26, 0.45)),
         ),
       ]),
     ]),

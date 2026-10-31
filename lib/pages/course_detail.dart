@@ -794,9 +794,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
       ),
       css('.badge-engineering').styles(
-        backgroundColor: Color.rgba(255, 87, 123, 0.15),
-        color: secondaryColor,
-        border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
+        backgroundColor: Color.rgba(251, 197, 26, 0.15),
+        color: primaryColor,
+        border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
       ),
       css('.level-badge').styles(
         padding: Padding.symmetric(vertical: 4.px, horizontal: 10.px),

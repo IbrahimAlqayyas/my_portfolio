@@ -101,7 +101,7 @@ class Header extends StatelessComponent {
               transition: Transition('filter', duration: Duration(milliseconds: 300)),
               raw: {
                 'filter':
-                    'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+                    'drop-shadow(0 0 3px rgba(251, 197, 26, 0.35)) drop-shadow(0 0 6px rgba(251, 197, 26, 0.18))',
               },
             ),
             css('&:last-child').styles(
@@ -112,7 +112,7 @@ class Header extends StatelessComponent {
             css('&:hover').styles(
               raw: {
                 'filter':
-                    'drop-shadow(0 0 6px rgba(255, 87, 123, 0.6)) drop-shadow(0 0 10px rgba(255, 87, 123, 0.3))',
+                    'drop-shadow(0 0 6px rgba(251, 197, 26, 0.6)) drop-shadow(0 0 10px rgba(251, 197, 26, 0.3))',
               },
             ),
           ]),
@@ -179,7 +179,7 @@ class Header extends StatelessComponent {
         raw: {
           'opacity': '1',
           'filter':
-              'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+              'drop-shadow(0 0 3px rgba(251, 197, 26, 0.35)) drop-shadow(0 0 6px rgba(251, 197, 26, 0.18))',
         },
       ),
       '41%': Styles(
@@ -191,19 +191,19 @@ class Header extends StatelessComponent {
       '42%': Styles(
         raw: {
           'opacity': '0.85',
-          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.2))',
+          'filter': 'drop-shadow(0 0 2px rgba(251, 197, 26, 0.2))',
         },
       ),
       '43%': Styles(
         raw: {
           'opacity': '0.35',
-          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.1))',
+          'filter': 'drop-shadow(0 0 1px rgba(251, 197, 26, 0.1))',
         },
       ),
       '44%': Styles(
         raw: {
           'opacity': '0.9',
-          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.25))',
+          'filter': 'drop-shadow(0 0 2px rgba(251, 197, 26, 0.25))',
         },
       ),
       '45%': Styles(
@@ -215,20 +215,20 @@ class Header extends StatelessComponent {
       '46%': Styles(
         raw: {
           'opacity': '0.8',
-          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.2))',
+          'filter': 'drop-shadow(0 0 2px rgba(251, 197, 26, 0.2))',
         },
       ),
       '47%': Styles(
         raw: {
           'opacity': '0.4',
-          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.15))',
+          'filter': 'drop-shadow(0 0 1px rgba(251, 197, 26, 0.15))',
         },
       ),
       '48%, 82%': Styles(
         raw: {
           'opacity': '1',
           'filter':
-              'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+              'drop-shadow(0 0 3px rgba(251, 197, 26, 0.35)) drop-shadow(0 0 6px rgba(251, 197, 26, 0.18))',
         },
       ),
       '83%': Styles(
@@ -240,19 +240,19 @@ class Header extends StatelessComponent {
       '84%': Styles(
         raw: {
           'opacity': '0.9',
-          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.25))',
+          'filter': 'drop-shadow(0 0 2px rgba(251, 197, 26, 0.25))',
         },
       ),
       '85%': Styles(
         raw: {
           'opacity': '0.3',
-          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.1))',
+          'filter': 'drop-shadow(0 0 1px rgba(251, 197, 26, 0.1))',
         },
       ),
       '86%': Styles(
         raw: {
           'opacity': '0.85',
-          'filter': 'drop-shadow(0 0 2px rgba(255, 87, 123, 0.2))',
+          'filter': 'drop-shadow(0 0 2px rgba(251, 197, 26, 0.2))',
         },
       ),
       '87%': Styles(
@@ -264,20 +264,20 @@ class Header extends StatelessComponent {
       '88%': Styles(
         raw: {
           'opacity': '0.95',
-          'filter': 'drop-shadow(0 0 3px rgba(255, 87, 123, 0.3))',
+          'filter': 'drop-shadow(0 0 3px rgba(251, 197, 26, 0.3))',
         },
       ),
       '89%': Styles(
         raw: {
           'opacity': '0.35',
-          'filter': 'drop-shadow(0 0 1px rgba(255, 87, 123, 0.15))',
+          'filter': 'drop-shadow(0 0 1px rgba(251, 197, 26, 0.15))',
         },
       ),
       '90%, 100%': Styles(
         raw: {
           'opacity': '1',
           'filter':
-              'drop-shadow(0 0 3px rgba(255, 87, 123, 0.35)) drop-shadow(0 0 6px rgba(255, 87, 123, 0.18))',
+              'drop-shadow(0 0 3px rgba(251, 197, 26, 0.35)) drop-shadow(0 0 6px rgba(251, 197, 26, 0.18))',
         },
       ),
     }),

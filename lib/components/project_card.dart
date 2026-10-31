@@ -102,8 +102,8 @@ class ProjectCard extends StatelessComponent {
         ),
         css('.badge-engineering').styles(
           backgroundColor: Color.rgba(15, 23, 42, 0.85),
-          color: secondaryColor,
-          border: Border.all(color: Color.rgba(255, 87, 123, 0.5), width: 1.px),
+          color: primaryColor,
+          border: Border.all(color: Color.rgba(251, 197, 26, 0.5), width: 1.px),
         ),
       ]),
       css('&:hover .card-image-wrapper img').styles(
@@ -127,9 +127,9 @@ class ProjectCard extends StatelessComponent {
           css('.main-tag-badge').styles(
             display: Display.inlineFlex,
             alignItems: AlignItems.center,
-            backgroundColor: Color.rgba(255, 87, 123, 0.16),
-            color: accentColor,
-            border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
+            backgroundColor: Color.rgba(251, 197, 26, 0.16),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
             padding: Padding.symmetric(vertical: 2.px, horizontal: 8.px),
             radius: BorderRadius.all(Radius.circular(8.px)),
             fontSize: 0.75.rem,
@@ -192,9 +192,9 @@ class ProjectCard extends StatelessComponent {
             shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(251, 197, 26, 0.25)),
           ),
           css('.btn-engineering').styles(
-            backgroundColor: secondaryColor,
-            color: const Color('#ffffff'),
-            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(255, 87, 123, 0.25)),
+            backgroundColor: primaryColor,
+            color: const Color('#0f172a'),
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(251, 197, 26, 0.25)),
           ),
         ]),
       ]),
@@ -203,7 +203,7 @@ class ProjectCard extends StatelessComponent {
         raw: {'transform': 'scale(1.02)'},
       ),
       css('&:hover .card-footer .btn-engineering').styles(
-        shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(255, 87, 123, 0.45)),
+        shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(251, 197, 26, 0.45)),
         raw: {'transform': 'scale(1.02)'},
       ),
     ]),

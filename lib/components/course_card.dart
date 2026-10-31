@@ -107,9 +107,9 @@ class CourseCard extends StatelessComponent {
             border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
           ),
           css('.badge-engineering').styles(
-            backgroundColor: Color.rgba(255, 87, 123, 0.15),
-            color: secondaryColor,
-            border: Border.all(color: Color.rgba(255, 87, 123, 0.4), width: 1.px),
+            backgroundColor: Color.rgba(251, 197, 26, 0.15),
+            color: primaryColor,
+            border: Border.all(color: Color.rgba(251, 197, 26, 0.4), width: 1.px),
           ),
         ]),
         css('h3').styles(
@@ -204,9 +204,10 @@ class CourseCard extends StatelessComponent {
             shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 12.px, color: Color.rgba(251, 197, 26, 0.3)),
           ),
           css('&:hover').styles(
-            backgroundColor: secondaryColor,
-            color: textColor,
-            shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(255, 87, 123, 0.4)),
+            backgroundColor: primaryColor,
+            color: backgroundColor,
+            raw: {'filter': 'brightness(1.12)'},
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 18.px, color: Color.rgba(251, 197, 26, 0.45)),
           ),
         ]),
         css('.btn-free', [

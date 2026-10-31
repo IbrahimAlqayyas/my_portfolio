@@ -299,10 +299,10 @@ class _HomeState extends State<Home> {
         ]),
         css('.card-engineering', [
           css('&:hover').styles(
-            raw: {'border-color': '#ff577b'},
-            shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(255, 87, 123, 0.2)),
+            raw: {'border-color': '#fbc51a'},
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(251, 197, 26, 0.2)),
           ),
-          css('.gateway-link').styles(color: secondaryColor),
+          css('.gateway-link').styles(color: primaryColor),
         ]),
       ]),
       css('.intersection-banner', [
@@ -396,7 +396,8 @@ class _HomeState extends State<Home> {
             transition: Transition('color', duration: Duration(milliseconds: 200)),
           ),
           css('.view-all-link:hover').styles(
-            color: secondaryColor,
+            color: primaryColor,
+            raw: {'filter': 'brightness(1.15)'},
           ),
         ]),
         css('.projects-grid, .courses-grid', [
@@ -453,8 +454,9 @@ class _HomeState extends State<Home> {
               shadow: BoxShadow(offsetX: 0.px, offsetY: 4.px, blur: 14.px, color: Color.rgba(251, 197, 26, 0.4)),
             ),
             css('&:hover').styles(
-              backgroundColor: secondaryColor,
-              color: textColor,
+              backgroundColor: primaryColor,
+              raw: {'filter': 'brightness(1.12)'},
+              shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 20.px, color: Color.rgba(251, 197, 26, 0.5)),
             ),
           ]),
           css('.btn-secondary', [
