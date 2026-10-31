@@ -27,7 +27,10 @@ void main() {
       base: kDebugMode ? '/' : '/my_portfolio/',
       title: 'Ibrahim AlQyas - Mobile & Web Software Engineer',
       head: [
-        link(rel: 'icon', href: assetUrl('favicon.ico')),
+        link(rel: 'icon', type: 'image/png', attributes: {'sizes': '32x32'}, href: assetUrl('favicon-32x32.png?v=3')),
+        link(rel: 'icon', type: 'image/png', attributes: {'sizes': '16x16'}, href: assetUrl('favicon-16x16.png?v=3')),
+        link(rel: 'apple-touch-icon', attributes: {'sizes': '180x180'}, href: assetUrl('apple-touch-icon.png?v=3')),
+        link(rel: 'shortcut icon', href: assetUrl('favicon.ico?v=3')),
       ],
       styles: [
         css.import('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'),
