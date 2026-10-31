@@ -31,16 +31,31 @@ class _HomeState extends State<Home> {
     // Select top 4 featured projects (2 software, 2 engineering)
     final featuredProjects = [
       projectsList.firstWhere((proj) => proj.id == 'ai-analytics-suite', orElse: () => projectsList.first),
-      projectsList.firstWhere((proj) => proj.id == 'fieldinspect-mobile-suite', orElse: () => projectsList.length > 1 ? projectsList[1] : projectsList.first),
-      projectsList.firstWhere((proj) => proj.id == 'refinery-turnaround-inspection', orElse: () => projectsList.length > 2 ? projectsList[2] : projectsList.first),
-      projectsList.firstWhere((proj) => proj.id == 'atex-hazardous-area-audit', orElse: () => projectsList.length > 3 ? projectsList[3] : projectsList.first),
+      projectsList.firstWhere(
+        (proj) => proj.id == 'fieldinspect-mobile-suite',
+        orElse: () => projectsList.length > 1 ? projectsList[1] : projectsList.first,
+      ),
+      projectsList.firstWhere(
+        (proj) => proj.id == 'refinery-turnaround-inspection',
+        orElse: () => projectsList.length > 2 ? projectsList[2] : projectsList.first,
+      ),
+      projectsList.firstWhere(
+        (proj) => proj.id == 'atex-hazardous-area-audit',
+        orElse: () => projectsList.length > 3 ? projectsList[3] : projectsList.first,
+      ),
     ];
 
     // Select top courses from both tracks
     final featuredCourses = [
       coursesList.firstWhere((crs) => crs.id == 'flutter-clean-architecture-course', orElse: () => coursesList.first),
-      coursesList.firstWhere((crs) => crs.id == 'ei-inspection-qaqc-masterclass', orElse: () => coursesList.length > 1 ? coursesList[1] : coursesList.first),
-      coursesList.firstWhere((crs) => crs.id == 'ei-itr-mdr-documentation-pack', orElse: () => coursesList.length > 2 ? coursesList[2] : coursesList.first),
+      coursesList.firstWhere(
+        (crs) => crs.id == 'ei-inspection-qaqc-masterclass',
+        orElse: () => coursesList.length > 1 ? coursesList[1] : coursesList.first,
+      ),
+      coursesList.firstWhere(
+        (crs) => crs.id == 'ei-itr-mdr-documentation-pack',
+        orElse: () => coursesList.length > 2 ? coursesList[2] : coursesList.first,
+      ),
     ];
 
     return section(classes: 'home-container', [
@@ -58,39 +73,39 @@ class _HomeState extends State<Home> {
             'Bridging two high-precision disciplines: Delivering technical excellence in industrial Electrical & Instrumentation (E&I) construction & inspection, and engineering cutting-edge mobile & web apps with Flutter & Dart.',
           ),
         ]),
+      ]),
 
-        // Dual-Track Gateways
-        div(classes: 'gateway-cards', [
-          // Gateway 1: Software & Flutter
-          Link(
-            to: '/software',
-            child: div(classes: 'gateway-card card-software', [
-              div(classes: 'gateway-icon-badge', [Component.text('📱')]),
-              h3([Component.text('Software & Flutter Hub')]),
-              p([
-                Component.text(
-                  'Explore production mobile & web applications, Clean Architecture patterns, and Flutter courses.',
-                ),
-              ]),
-              span(classes: 'gateway-link', [Component.text('Enter Software Hub →')]),
+      // Dual-Track Gateways
+      div(classes: 'gateway-cards', [
+        // Gateway 1: Software & Flutter
+        Link(
+          to: '/software',
+          child: div(classes: 'gateway-card card-software', [
+            div(classes: 'gateway-icon-badge', [Component.text('📱')]),
+            h3([Component.text('Software & Flutter Hub')]),
+            p([
+              Component.text(
+                'Explore production mobile & web applications, Clean Architecture patterns, and Flutter courses.',
+              ),
             ]),
-          ),
+            span(classes: 'gateway-link', [Component.text('Enter Software Hub →')]),
+          ]),
+        ),
 
-          // Gateway 2: E&I Engineering
-          Link(
-            to: '/engineering',
-            child: div(classes: 'gateway-card card-engineering', [
-              div(classes: 'gateway-icon-badge', [Component.text('⚡')]),
-              h3([Component.text('E&I Engineering Hub')]),
-              p([
-                Component.text(
-                  'Explore industrial inspection case studies, ATEX/IECEx compliance, ITR & MDR quality consulting.',
-                ),
-              ]),
-              span(classes: 'gateway-link', [Component.text('Enter Engineering Hub →')]),
+        // Gateway 2: E&I Engineering
+        Link(
+          to: '/engineering',
+          child: div(classes: 'gateway-card card-engineering', [
+            div(classes: 'gateway-icon-badge', [Component.text('⚡')]),
+            h3([Component.text('E&I Engineering Hub')]),
+            p([
+              Component.text(
+                'Explore industrial inspection case studies, ATEX/IECEx compliance, ITR & MDR quality consulting.',
+              ),
             ]),
-          ),
-        ]),
+            span(classes: 'gateway-link', [Component.text('Enter Engineering Hub →')]),
+          ]),
+        ),
       ]),
 
       // The Intersection Spotlight Section
@@ -120,7 +135,11 @@ class _HomeState extends State<Home> {
             h2([Component.text('Featured Work Across Both Disciplines')]),
             p([Component.text('A curated showcase of mobile apps, web platforms, and industrial E&I audits.')]),
           ]),
-          Link(to: '/projects', classes: 'view-all-link', child: Component.text('View All 8 Projects in Shared Portfolio →')),
+          Link(
+            to: '/projects',
+            classes: 'view-all-link',
+            child: Component.text('View All 8 Projects in Shared Portfolio →'),
+          ),
         ]),
 
         div(classes: 'projects-grid', [
@@ -179,12 +198,12 @@ class _HomeState extends State<Home> {
           alignItems: AlignItems.center,
           textAlign: TextAlign.center,
           padding: Padding.symmetric(vertical: 3.5.rem, horizontal: 2.rem),
-          margin: Margin.only(bottom: 3.5.rem),
+          margin: Margin.only(bottom: 2.5.rem),
           backgroundColor: cardBackground,
           border: Border.all(color: cardBorder, width: 1.px),
           radius: BorderRadius.all(Radius.circular(24.px)),
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(0, 0, 0, 0.4)),
-          raw: {'backdrop-filter': 'blur(16px)', '-webkit-backdrop-filter': 'blur(16px)'},
+          raw: cardBackdropFilter,
         ),
         css('.hero-badge').styles(
           backgroundColor: Color.rgba(251, 197, 26, 0.12),
@@ -214,75 +233,76 @@ class _HomeState extends State<Home> {
           lineHeight: 1.7.em,
           color: textMutedColor,
           maxWidth: 820.px,
-          margin: Margin.only(bottom: 2.5.rem),
+          margin: Margin.zero,
         ),
-        css('.gateway-cards', [
+      ]),
+      css('.gateway-cards', [
+        css('&').styles(
+          display: Display.flex,
+          flexWrap: FlexWrap.wrap,
+          justifyContent: JustifyContent.center,
+          gap: Gap.all(1.5.rem),
+          width: 100.percent,
+          maxWidth: 900.px,
+          margin: Margin.only(bottom: 3.5.rem),
+        ),
+        css('a').styles(
+          textDecoration: TextDecoration(line: TextDecorationLine.none),
+          flex: Flex(grow: 1),
+          minWidth: 280.px,
+        ),
+        css('.gateway-card', [
           css('&').styles(
+            backgroundColor: cardBackground,
+            border: Border.all(color: cardBorder, width: 1.px),
+            radius: BorderRadius.all(Radius.circular(20.px)),
+            padding: Padding.all(2.rem),
+            boxSizing: BoxSizing.borderBox,
+            textAlign: TextAlign.left,
             display: Display.flex,
-            flexWrap: FlexWrap.wrap,
-            justifyContent: JustifyContent.center,
-            gap: Gap.all(1.5.rem),
-            width: 100.percent,
-            maxWidth: 900.px,
+            flexDirection: FlexDirection.column,
+            height: 100.percent,
+            raw: cardBackdropFilter,
+            transition: Transition('all', duration: Duration(milliseconds: 300)),
           ),
-          css('a').styles(
-            textDecoration: TextDecoration(line: TextDecorationLine.none),
+          css('&:hover').styles(
+            raw: {'transform': 'translateY(-4px)'},
+          ),
+          css('.gateway-icon-badge').styles(
+            fontSize: 2.2.rem,
+            margin: Margin.only(bottom: 1.rem),
+          ),
+          css('h3').styles(
+            fontSize: 1.4.rem,
+            fontWeight: FontWeight.w700,
+            color: textColor,
+            margin: Margin.only(bottom: 0.6.rem),
+          ),
+          css('p').styles(
+            fontSize: 0.95.rem,
+            color: textMutedColor,
+            lineHeight: 1.5.em,
+            margin: Margin.only(bottom: 1.5.rem),
             flex: Flex(grow: 1),
-            minWidth: 280.px,
           ),
-          css('.gateway-card', [
-            css('&').styles(
-              backgroundColor: cardBackground,
-              border: Border.all(color: cardBorder, width: 1.px),
-              radius: BorderRadius.all(Radius.circular(20.px)),
-              padding: Padding.all(2.rem),
-              boxSizing: BoxSizing.borderBox,
-              textAlign: TextAlign.left,
-              display: Display.flex,
-              flexDirection: FlexDirection.column,
-              height: 100.percent,
-              raw: {'backdrop-filter': 'blur(16px)', '-webkit-backdrop-filter': 'blur(16px)'},
-              transition: Transition('all', duration: Duration(milliseconds: 300)),
-            ),
-            css('&:hover').styles(
-              raw: {'transform': 'translateY(-4px)'},
-            ),
-            css('.gateway-icon-badge').styles(
-              fontSize: 2.2.rem,
-              margin: Margin.only(bottom: 1.rem),
-            ),
-            css('h3').styles(
-              fontSize: 1.4.rem,
-              fontWeight: FontWeight.w700,
-              color: textColor,
-              margin: Margin.only(bottom: 0.6.rem),
-            ),
-            css('p').styles(
-              fontSize: 0.95.rem,
-              color: textMutedColor,
-              lineHeight: 1.5.em,
-              margin: Margin.only(bottom: 1.5.rem),
-              flex: Flex(grow: 1),
-            ),
-            css('.gateway-link').styles(
-              fontSize: 1.rem,
-              fontWeight: FontWeight.w700,
-            ),
-          ]),
-          css('.card-software', [
-            css('&:hover').styles(
-              raw: {'border-color': '#fbc51a'},
-              shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(251, 197, 26, 0.2)),
-            ),
-            css('.gateway-link').styles(color: primaryColor),
-          ]),
-          css('.card-engineering', [
-            css('&:hover').styles(
-              raw: {'border-color': '#ff577b'},
-              shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(255, 87, 123, 0.2)),
-            ),
-            css('.gateway-link').styles(color: secondaryColor),
-          ]),
+          css('.gateway-link').styles(
+            fontSize: 1.rem,
+            fontWeight: FontWeight.w700,
+          ),
+        ]),
+        css('.card-software', [
+          css('&:hover').styles(
+            raw: {'border-color': '#fbc51a'},
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(251, 197, 26, 0.2)),
+          ),
+          css('.gateway-link').styles(color: primaryColor),
+        ]),
+        css('.card-engineering', [
+          css('&:hover').styles(
+            raw: {'border-color': '#ff577b'},
+            shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 24.px, color: Color.rgba(255, 87, 123, 0.2)),
+          ),
+          css('.gateway-link').styles(color: secondaryColor),
         ]),
       ]),
       css('.intersection-banner', [
@@ -296,7 +316,7 @@ class _HomeState extends State<Home> {
           textAlign: TextAlign.center,
           margin: Margin.only(bottom: 4.rem),
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 30.px, color: Color.rgba(0, 0, 0, 0.3)),
-          raw: {'backdrop-filter': 'blur(16px)', '-webkit-backdrop-filter': 'blur(16px)'},
+          raw: cardBackdropFilter,
         ),
         css('.intersection-badge').styles(
           display: Display.inlineFlex,
@@ -398,7 +418,7 @@ class _HomeState extends State<Home> {
           boxSizing: BoxSizing.borderBox,
           textAlign: TextAlign.center,
           shadow: BoxShadow(offsetX: 0.px, offsetY: 8.px, blur: 32.px, color: Color.rgba(251, 197, 26, 0.15)),
-          raw: {'backdrop-filter': 'blur(16px)', '-webkit-backdrop-filter': 'blur(16px)'},
+          raw: cardBackdropFilter,
         ),
         css('h2').styles(
           fontSize: 2.2.rem,

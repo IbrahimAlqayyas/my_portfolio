@@ -63,8 +63,7 @@ class ProjectCard extends StatelessComponent {
         raw: {
           'text-decoration': 'none',
           'color': 'inherit',
-          'backdrop-filter': 'blur(16px)',
-          '-webkit-backdrop-filter': 'blur(16px)',
+          ...cardBackdropFilter,
           'transition': 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         },
       ),

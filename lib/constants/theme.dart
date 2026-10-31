@@ -2,15 +2,15 @@ import 'package:jaspr/dom.dart';
 
 // Dark Mode Design System Tokens derived from ALQYAS Logo2
 const backgroundColor = Color('#0f172a');
-const surfaceColor = Color('#1e293b');
-const surfaceBorder = Color('#334155');
+const surfaceColor = Color('#141820');
+const surfaceBorder = Color('#282e3a');
 
 /// Unified Glassmorphic Card & Panel Tokens
 /// -------------------------------------------------------------
 /// Modifying [cardBackground] here changes the card/container
 /// background across the ENTIRE application in one single place.
-const cardBackground = Color.rgba(30, 41, 59, 0.5); // Unified transparent card background
-const cardBorder = Color.rgba(51, 65, 85, 0.65); // Unified translucent card border
+const cardBackground = Color.rgba(16, 20, 26, 0.38); // Unified transparent card background with lowered blue
+const cardBorder = Color.rgba(255, 255, 255, 0.08); // Unified translucent card border with neutral specular rim
 const cardBackdropFilter = {
   'backdrop-filter': 'blur(1px)',
   '-webkit-backdrop-filter': 'blur(1px)',

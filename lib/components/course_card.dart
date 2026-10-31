@@ -70,8 +70,7 @@ class CourseCard extends StatelessComponent {
         boxSizing: BoxSizing.borderBox,
         shadow: BoxShadow(offsetX: 0.px, offsetY: 6.px, blur: 24.px, color: Color.rgba(0, 0, 0, 0.35)),
         raw: {
-          'backdrop-filter': 'blur(16px)',
-          '-webkit-backdrop-filter': 'blur(16px)',
+          ...cardBackdropFilter,
           'transition': 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         },
       ),
